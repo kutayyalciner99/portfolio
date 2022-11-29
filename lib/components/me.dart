@@ -1,9 +1,12 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:hovering/hovering.dart';
 import 'package:typewritertext/typewritertext.dart';
 
 class Me extends StatefulWidget {
-  const Me({Key? key}) : super(key: key);
+  const Me({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<Me> createState() => _MeState();
@@ -14,9 +17,13 @@ class _MeState extends State<Me> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(30),
-      child: Container(
-          decoration: BoxDecoration(
+      child: HoverContainer(
+          hoverDecoration: BoxDecoration(
               border: Border.all(color: Colors.orange.shade800, width: 2),
+              borderRadius: BorderRadius.circular(24)),
+          decoration: BoxDecoration(
+              border:
+                  Border.all(color: Colors.white.withOpacity(0.2), width: 2),
               borderRadius: BorderRadius.circular(24)),
           height: 700,
           width: 1200,

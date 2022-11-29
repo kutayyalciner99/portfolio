@@ -35,9 +35,6 @@ class MyApp extends StatelessWidget {
               showTrackOnHover: false,
               thumbVisibility: MaterialStateProperty.all(true),
               minThumbLength: 10,
-              trackVisibility: MaterialStateProperty.all(true),
-              trackColor:
-                  MaterialStateProperty.all(Colors.white.withOpacity(0.1)),
               thumbColor: MaterialStateColor.resolveWith(
                   (states) => Colors.orange.shade800)),
           backgroundColor: appColorPalette,
@@ -67,6 +64,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   ScrollController listController = ScrollController();
 
   bool _isOpened = false;
+  bool entered = false;
+
   late AnimationController _animationController;
   late Animation<double> _progress;
 
@@ -211,17 +210,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                       onTap: () {
                         scrollController.animateTo(100,
                             duration: const Duration(seconds: 1),
-                            curve: Curves.easeIn);
+                            curve: Curves.easeOut);
                       },
                     ),
                     const Spacer(),
                     HoverWidgetComp(
                       text: "Projects",
                       onTap: () {
-                        scrollController.animateTo(
-                            scrollController.position.maxScrollExtent,
+                        scrollController.animateTo(500,
                             duration: const Duration(seconds: 1),
-                            curve: Curves.easeIn);
+                            curve: Curves.easeInSine);
                       },
                     ),
                     const Spacer(),
@@ -231,13 +229,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         scrollController.animateTo(
                             scrollController.position.maxScrollExtent,
                             duration: const Duration(seconds: 1),
-                            curve: Curves.easeIn);
+                            curve: Curves.easeOut);
                       },
                     ),
                     const Spacer(),
                     HoverWidgetComp(
-                      text: "Contact",
-                      onTap: () {},
+                      text: "Contact Me",
+                      onTap: () {
+                       
+                      },
                     ),
                     const Spacer(
                       flex: 2,
@@ -257,14 +257,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         child: Row(
-                          children: const [
+                          children: [
                             RotatedBox(
                                 quarterTurns: 3,
                                 child: Text(
                                   "Me:",
-                                  style: TextStyle(fontSize: 60),
+                                  style: TextStyle(
+                                      fontSize: 60,
+                                      color: entered
+                                          ? Colors.orange.shade800
+                                          : Colors.white),
                                 )),
-                            Align(alignment: Alignment.center, child: Me()),
+                            const Align(
+                                alignment: Alignment.center, child: Me()),
                           ],
                         ),
                       ),
@@ -301,39 +306,58 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                         ),
                       ),
                       Container(
-                        height: 270,
+                        height: 400,
                         width: size.width,
                         color: Colors.white.withOpacity(0.1),
                         child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ListView(
-                              controller: listController,
-                              primary: false,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              children: [
-                                HomePageCard(
-                                  title: "Responsive",
-                                  text:
-                                      "Cool application designs with \n responsive & interactive builds",
-                                  image: "assets/background.gif",
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 10.0),
+                                child: Container(
+                                  color: Colors.orange.withOpacity(0.2),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Text(
+                                        "SKILLS:",
+                                        style: TextStyle(fontSize: 40),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                HomePageCard(
-                                  title: "Frontend",
-                                  text:
-                                      "I build mobile Applications with \n Flutter (For Android and IOS).",
-                                  image: "assets/flutter_logo.png",
+                              ),
+                              Expanded(
+                                child: ListView(
+                                  controller: listController,
+                                  primary: false,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  physics: const BouncingScrollPhysics(),
+                                  children: [
+                                    HomePageCard(
+                                      title: "Responsive",
+                                      text:
+                                          "Cool application designs with \n responsive & interactive builds",
+                                      image: "assets/background.gif",
+                                    ),
+                                    HomePageCard(
+                                      title: "Frontend",
+                                      text:
+                                          "I build Frontend Applications with \n Flutter (For Android, IOS and Website).",
+                                      image: "assets/flutter_logo.png",
+                                    ),
+                                    HomePageCard(
+                                      title: "Backend",
+                                      text:
+                                          "I build Backend services with .NETCore \n  creating Restful API with MVC method",
+                                      image: "assets/Csharp_logo.png",
+                                    ),
+                                  ],
                                 ),
-                                HomePageCard(
-                                  title: "Backend",
-                                  text:
-                                      "I build backend services with\n .NETCore for apis.",
-                                  image: "assets/Csharp_logo.png",
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

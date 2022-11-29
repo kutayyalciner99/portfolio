@@ -1,0 +1,265 @@
+import 'package:flutter/material.dart';
+
+class name extends StatefulWidget {
+  const name({Key? key}) : super(key: key);
+
+  @override
+  State<name> createState() => _nameState();
+}
+
+class _nameState extends State<name> {
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Visibility(
+              visible: logo != null,
+              child: CircleAvatar(
+                radius: avatarRadius ?? 50.0,
+                backgroundImage: logo,
+              ),
+            ),
+            Visibility(
+                visible: image != null,
+                child: image ?? const SizedBox.shrink()),
+            Text(
+              companyName,
+              style: TextStyle(
+                fontFamily: companyFont ?? 'Pacifico',
+                fontSize: companyFontSize ?? 40.0,
+                color: companyColor,
+                fontWeight: companyFontWeight ?? FontWeight.bold,
+              ),
+            ),
+            Visibility(
+              visible: tagLine != null,
+              child: Text(
+                tagLine ?? "",
+                style: TextStyle(
+                  fontFamily: taglineFont ?? 'Pacifico',
+                  color: taglineColor,
+                  fontSize: 20.0,
+                  letterSpacing: 2.0,
+                  fontWeight: taglineFontWeight ?? FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Divider(
+              color: dividerColor ?? Colors.teal[200],
+              thickness: dividerThickness ?? 4.0,
+              indent: 50.0,
+              endIndent: 50.0,
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Visibility(
+              visible: website != null,
+              child: Card(
+                clipBehavior: Clip.antiAlias,
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 25.0,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                color: cardColor,
+                child: ListTile(
+                  leading: Icon(Typicons.link),
+                  title: Text(
+                    websiteText ?? 'Website',
+                    style: TextStyle(
+                      color: textColor,
+                      fontFamily: textFont,
+                    ),
+                  ),
+                  onTap: () => launch(website!),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: phoneNumber != null,
+              child: Card(
+                clipBehavior: Clip.antiAlias,
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 25.0,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                color: cardColor,
+                child: ListTile(
+                  leading: Icon(Typicons.phone),
+                  title: Text(
+                    phoneNumberText ?? 'Phone Number',
+                    style: TextStyle(
+                      color: textColor,
+                      fontFamily: textFont,
+                    ),
+                  ),
+                  onTap: () => showAlert(context),
+                ),
+              ),
+            ),
+            Card(
+              clipBehavior: Clip.antiAlias,
+              margin: const EdgeInsets.symmetric(
+                vertical: 10.0,
+                horizontal: 25.0,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50.0),
+              ),
+              color: cardColor,
+              child: ListTile(
+                leading: Icon(Typicons.mail),
+                title: Text(
+                  emailText ?? 'Email ID',
+                  style: TextStyle(
+                    color: textColor,
+                    fontFamily: textFont,
+                  ),
+                ),
+                onTap: () => launch('mailto:' + email),
+              ),
+            ),
+            Visibility(
+              visible: twitterHandle != null,
+              child: Card(
+                clipBehavior: Clip.antiAlias,
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 25.0,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                color: cardColor,
+                child: ListTile(
+                  leading: Icon(Typicons.social_twitter),
+                  title: Text(
+                    'Twitter',
+                    style: TextStyle(
+                      color: textColor,
+                      fontFamily: textFont,
+                    ),
+                  ),
+                  onTap: () => launch('https://twitter.com/' + twitterHandle!),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: facebookHandle != null,
+              child: Card(
+                clipBehavior: Clip.antiAlias,
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 25.0,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                color: cardColor,
+                child: ListTile(
+                  leading: Icon(Typicons.social_facebook),
+                  title: Text(
+                    'Facebook',
+                    style: TextStyle(
+                      color: textColor,
+                      fontFamily: textFont,
+                    ),
+                  ),
+                  onTap: () =>
+                      launch('https://www.facebook.com/' + facebookHandle!),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: instagram != null,
+              child: Card(
+                clipBehavior: Clip.antiAlias,
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 25.0,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                color: cardColor,
+                child: ListTile(
+                  leading: Icon(Typicons.social_instagram),
+                  title: Text(
+                    'Instagram',
+                    style: TextStyle(
+                      color: textColor,
+                      fontFamily: textFont,
+                    ),
+                  ),
+                  onTap: () => launch('https://instagram.com/' + instagram!),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: githubUserName != null,
+              child: Card(
+                clipBehavior: Clip.antiAlias,
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 25.0,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                color: cardColor,
+                child: ListTile(
+                  leading: Icon(Typicons.social_github),
+                  title: Text(
+                    'Github',
+                    style: TextStyle(
+                      color: textColor,
+                      fontFamily: textFont,
+                    ),
+                  ),
+                  onTap: () => launch('https://github.com/' + githubUserName!),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: linkedinURL != null,
+              child: Card(
+                clipBehavior: Clip.antiAlias,
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10.0,
+                  horizontal: 25.0,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                color: cardColor,
+                child: ListTile(
+                  leading: Icon(Typicons.social_linkedin),
+                  title: Text(
+                    'Linkedin',
+                    style: TextStyle(
+                      color: textColor,
+                      fontFamily: textFont,
+                    ),
+                  ),
+                  onTap: () => launch(linkedinURL!),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

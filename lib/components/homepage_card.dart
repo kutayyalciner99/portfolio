@@ -55,6 +55,7 @@ class _HomePageCardState extends State<HomePageCard> {
                       child: Text(
                         widget.text,
                         textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 22),
                       ),
                     ),
                     Image.asset(

@@ -17,7 +17,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   animated_page_transition: ^0.0.1+2
   typewritertext: ^1.8.0
-  social_media_buttons: ^0.1.2
   hovering: ^1.0.4
   webview_flutter: ^2.0.14
   carousel_slider: ^4.1.1
