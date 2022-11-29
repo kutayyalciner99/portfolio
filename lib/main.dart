@@ -1,6 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hovering/hovering.dart';
+import 'package:simple_animated_icon/simple_animated_icon.dart';
 
 import 'package:portfolio/components/homepage_card.dart';
 import 'package:portfolio/components/horizontal_scroll.dart';
@@ -28,6 +31,15 @@ class MyApp extends StatelessWidget {
       scrollBehavior: MyCustomScrollBehavior(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+          scrollbarTheme: ScrollbarThemeData(
+              showTrackOnHover: false,
+              thumbVisibility: MaterialStateProperty.all(true),
+              minThumbLength: 10,
+              trackVisibility: MaterialStateProperty.all(true),
+              trackColor:
+                  MaterialStateProperty.all(Colors.white.withOpacity(0.1)),
+              thumbColor: MaterialStateColor.resolveWith(
+                  (states) => Colors.orange.shade800)),
           backgroundColor: appColorPalette,
           scaffoldBackgroundColor: appColorPalette,
           primarySwatch: Colors.blue,
@@ -49,9 +61,63 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  ValueNotifier<double> scrollPos = ValueNotifier(0);
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  ValueNotifier<bool> scrollPos = ValueNotifier(false);
   ScrollController scrollController = ScrollController();
+  ScrollController listController = ScrollController();
+
+  bool _isOpened = false;
+  late AnimationController _animationController;
+  late Animation<double> _progress;
+
+  _scrollListener() {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+        !scrollController.position.outOfRange) {
+      setState(() {
+        scrollPos.value = true;
+      });
+    }
+    if (scrollController.offset <= scrollController.position.minScrollExtent &&
+        !scrollController.position.outOfRange) {
+      setState(() {
+        scrollPos.value = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    scrollController.addListener(_scrollListener);
+
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300))
+      ..addListener(() {
+        setState(() {});
+      });
+
+    _progress =
+        Tween<double>(begin: 0.0, end: 1.0).animate(_animationController);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void animate() {
+    if (_isOpened) {
+      _animationController.reverse();
+    } else {
+      _animationController.forward();
+    }
+
+    setState(() {
+      _isOpened = !_isOpened;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,150 +126,223 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: ValueListenableBuilder(
         valueListenable: scrollPos,
         builder: (context, value, child) {
-          if (value > 10) {
+          if (value) {
             return FloatingActionButton(
-              hoverColor: appColorPalette,
-              backgroundColor: appColorPalette,
-              foregroundColor: Colors.orange.shade800,
-              focusColor: appColorPalette,
-              onPressed: () {
-                if (scrollController.hasClients) {
-                  final position = scrollController.position.minScrollExtent;
-                  scrollController.animateTo(
-                    position,
-                    duration: const Duration(seconds: 1),
-                    curve: Curves.easeOut,
-                  );
-                }
-              },
-              isExtended: true,
-              tooltip: "Scroll To Top",
-              child: const Icon(Icons.arrow_upward),
-            );
+                hoverColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                backgroundColor: Colors.transparent,
+                foregroundColor: Colors.orange.shade800,
+                focusColor: appColorPalette,
+                onPressed: () {
+                  animate();
+                  if (scrollController.hasClients) {
+                    final position = scrollController.position.minScrollExtent;
+                    scrollController.animateTo(
+                      position,
+                      duration: const Duration(seconds: 1),
+                      curve: Curves.easeOut,
+                    );
+                  }
+                },
+                isExtended: true,
+                tooltip: "Scroll To Top",
+                child: RotatedBox(
+                  quarterTurns: 1,
+                  child: SimpleAnimatedIcon(
+                    transitions: const [Transitions.zoom_in],
+                    startIcon: CupertinoIcons.back,
+                    endIcon: CupertinoIcons.back,
+                    progress: _progress,
+                  ),
+                ));
           }
           return Container();
         },
       ),
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        leadingWidth: 300,
-        title: Row(
-          children: [
-            const Spacer(
-              flex: 10,
-            ),
-            HoverWidgetComp(
-              text: "Me",
-            ),
-            const Spacer(),
-            HoverWidgetComp(
-              text: "Projects",
-            ),
-            const Spacer(),
-            HoverWidgetComp(
-              text: "Skills",
-            ),
-            const Spacer(),
-            HoverWidgetComp(
-              text: "Contact",
-            ),
-            const Spacer(
-              flex: 10,
-            ),
-          ],
-        ),
-        centerTitle: true,
-      ),
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (scrollNotification) {
-          if (scrollController.offset != 0) {
-            scrollPos.value = scrollNotification.metrics.pixels;
-          }
-
-          return false;
-        },
-        child: SingleChildScrollView(
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   backgroundColor: Colors.transparent,
+      //   leadingWidth: 300,
+      //   title: Row(
+      //     children: [
+      //       const Spacer(
+      //         flex: 10,
+      //       ),
+      //       HoverWidgetComp(
+      //         text: "Me",
+      //       ),
+      //       const Spacer(),
+      //       HoverWidgetComp(
+      //         text: "Projects",
+      //       ),
+      //       const Spacer(),
+      //       HoverWidgetComp(
+      //         text: "Skills",
+      //       ),
+      //       const Spacer(),
+      //       HoverWidgetComp(
+      //         text: "Contact",
+      //       ),
+      //       const Spacer(
+      //         flex: 10,
+      //       ),
+      //     ],
+      //   ),
+      //   centerTitle: true,
+      // ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: CustomScrollView(
           controller: scrollController,
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Stack(
-                  children: const [
-                    Positioned(
-                      left: 100,
-                      top: 300,
-                      child: RotatedBox(
-                          quarterTurns: 3,
-                          child: Text(
-                            "Me:",
-                            style: TextStyle(fontSize: 60),
-                          )),
+          shrinkWrap: true,
+          slivers: [
+            SliverAppBar(
+              elevation: 0,
+              backgroundColor: Colors.transparent,
+              expandedHeight: 100.0,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Row(
+                  children: [
+                    const Spacer(
+                      flex: 2,
                     ),
-                    Align(alignment: Alignment.center, child: Me()),
+                    HoverWidgetComp(
+                      text: "Me",
+                      onTap: () {
+                        scrollController.animateTo(100,
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.easeIn);
+                      },
+                    ),
+                    const Spacer(),
+                    HoverWidgetComp(
+                      text: "Projects",
+                      onTap: () {
+                        scrollController.animateTo(
+                            scrollController.position.maxScrollExtent,
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.easeIn);
+                      },
+                    ),
+                    const Spacer(),
+                    HoverWidgetComp(
+                      text: "Skills",
+                      onTap: () {
+                        scrollController.animateTo(
+                            scrollController.position.maxScrollExtent,
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.easeIn);
+                      },
+                    ),
+                    const Spacer(),
+                    HoverWidgetComp(
+                      text: "Contact",
+                      onTap: () {},
+                    ),
+                    const Spacer(
+                      flex: 2,
+                    ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Stack(
-                    children: const [
-                      Positioned(
-                        left: 100,
-                        top: 100,
-                        child: RotatedBox(
-                            quarterTurns: 3,
-                            child: Text(
-                              "Projects:",
-                              style: TextStyle(fontSize: 60),
-                            )),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate((_, int index) {
+                return Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: const [
+                            RotatedBox(
+                                quarterTurns: 3,
+                                child: Text(
+                                  "Me:",
+                                  style: TextStyle(fontSize: 60),
+                                )),
+                            Align(alignment: Alignment.center, child: Me()),
+                          ],
+                        ),
                       ),
-                      Align(
-                          alignment: Alignment.center,
-                          child: ComplicatedImageDemo()),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Center(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Spacer(
+                                flex: 2,
+                              ),
+                              RotatedBox(
+                                  quarterTurns: 3,
+                                  child: Text(
+                                    "Projects:",
+                                    style: TextStyle(fontSize: 60),
+                                  )),
+                              Spacer(
+                                flex: 3,
+                              ),
+                              Align(
+                                  alignment: Alignment.center,
+                                  child: SizedBox(
+                                      height: 400,
+                                      width: 800,
+                                      child: ComplicatedImageDemo())),
+                              Spacer(
+                                flex: 5,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 270,
+                        width: size.width,
+                        color: Colors.white.withOpacity(0.1),
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListView(
+                              controller: listController,
+                              primary: false,
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              physics: const BouncingScrollPhysics(),
+                              children: [
+                                HomePageCard(
+                                  title: "Responsive",
+                                  text:
+                                      "Cool application designs with \n responsive & interactive builds",
+                                  image: "assets/background.gif",
+                                ),
+                                HomePageCard(
+                                  title: "Frontend",
+                                  text:
+                                      "I build mobile Applications with \n Flutter (For Android and IOS).",
+                                  image: "assets/flutter_logo.png",
+                                ),
+                                HomePageCard(
+                                  title: "Backend",
+                                  text:
+                                      "I build backend services with\n .NETCore for apis.",
+                                  image: "assets/Csharp_logo.png",
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                ),
-                Container(
-                  height: 270,
-                  width: size.width,
-                  color: Colors.white.withOpacity(0.1),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListView(
-                        primary: false,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        physics: const BouncingScrollPhysics(),
-                        children: [
-                          HomePageCard(
-                            title: "Responsive",
-                            text:
-                                "Cool application designs with \n responsive build",
-                            image: "assets/background.gif",
-                          ),
-                          HomePageCard(
-                            title: "Frontend",
-                            text:
-                                "I build mobile Applications with \n Flutter (For Android and IOS).",
-                            image: "assets/flutter_logo.png",
-                          ),
-                          HomePageCard(
-                            title: "Backend",
-                            text:
-                                "I build backend services with\n .NETCore for apis.",
-                            image: "assets/Csharp_logo.png",
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                );
+              }, childCount: 1),
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -259,6 +398,7 @@ class ComplicatedImageDemo extends StatelessWidget {
       height: 400,
       width: 800,
       child: CarouselSlider(
+        carouselController: CarouselController(),
         options: CarouselOptions(
           autoPlayCurve: Curves.easeInOut,
           enableInfiniteScroll: true,
@@ -276,9 +416,11 @@ class ComplicatedImageDemo extends StatelessWidget {
 
 class HoverWidgetComp extends StatefulWidget {
   String text;
+  Function() onTap;
   HoverWidgetComp({
     Key? key,
     required this.text,
+    required this.onTap,
   }) : super(key: key);
 
   @override
@@ -290,12 +432,15 @@ class _HoverWidgetCompState extends State<HoverWidgetComp>
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: HoverCrossFadeWidget(
-        cursor: SystemMouseCursors.click,
-        duration: const Duration(milliseconds: 200),
-        firstChild: Text(widget.text),
-        secondChild:
-            Text(widget.text, style: TextStyle(color: Colors.orange.shade600)),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: HoverCrossFadeWidget(
+          cursor: SystemMouseCursors.click,
+          duration: const Duration(milliseconds: 200),
+          firstChild: Text(widget.text),
+          secondChild: Text(widget.text,
+              style: TextStyle(color: Colors.orange.shade600)),
+        ),
       ),
     );
   }

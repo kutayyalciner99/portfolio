@@ -22,6 +22,7 @@ dependencies:
   webview_flutter: ^2.0.14
   carousel_slider: ^4.1.1
   auto_size_text: ^3.0.0
+  simple_animated_icon: ^1.1.0
   
   
 
