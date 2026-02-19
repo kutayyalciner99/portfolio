@@ -1,0 +1,13 @@
+# Serve showcase HTML files as static files (must come before SPA fallback)
+/yuvamdunya.html    /yuvamdunya.html    200
+/tarotbloom.html    /tarotbloom.html    200
+/goodforyou.html    /goodforyou.html    200
+/figurethedoodle.html    /figurethedoodle.html    200
+/avrosis.html    /avrosis.html    200
+/edwai.html    /edwai.html    200
+/360NBA.html    /360NBA.html    200
+/crossthrace.html    /crossthrace.html    200
+/dymobile.html    /dymobile.html    200
+/roketsan.html    /roketsan.html    200
+# SPA fallback: all other routes → index.html
+/*    /index.html    200

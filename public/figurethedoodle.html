@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Figure The Doodle – Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --teal: #2ec4b6;
+  --teal-dark: #1a9e92;
+  --yellow: #ffdd57;
+  --yellow-dark: #f0c800;
+  --purple: #9b5de5;
+  --purple-light: #c77dff;
+  --pink: #f72585;
+  --bg: #fdf6ec;
+  --white: #ffffff;
+  --dark: #1a1a2e;
+  --gray: #6b7280;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Nunito', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Squiggly background doodles */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(46,196,182,0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(255,221,87,0.12) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(155,93,229,0.08) 0%, transparent 40%);
+  pointer-events: none; z-index: 0;
+}
+
+.page { position: relative; z-index: 1; }
+
+/* Floating doodle elements */
+.doodle-bg {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.doodle-el {
+  position: absolute;
+  font-size: var(--size, 30px);
+  opacity: 0.06;
+  animation: floatDoodle var(--dur, 8s) ease-in-out var(--delay, 0s) infinite;
+  transform-origin: center;
+}
+@keyframes floatDoodle {
+  0%, 100% { transform: translateY(0) rotate(var(--rot0, 0deg)); }
+  50% { transform: translateY(-15px) rotate(var(--rot1, 10deg)); }
+}
+
+/* ===== HEADER ===== */
+header {
+  text-align: center;
+  padding: 50px 20px 30px;
+  position: relative;
+}
+
+.app-icon {
+  width: 90px; height: 90px;
+  background: linear-gradient(135deg, var(--teal), var(--purple));
+  border-radius: 22px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 44px;
+  margin: 0 auto 16px;
+  box-shadow: 0 8px 30px rgba(46,196,182,0.35), 0 0 0 4px white, 0 0 0 6px rgba(46,196,182,0.2);
+  animation: iconBounce 3s ease-in-out infinite;
+}
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+header h1 {
+  font-family: 'Fredoka One', cursive;
+  font-size: clamp(38px, 6vw, 68px);
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, var(--teal-dark), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.tagline {
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  color: var(--gray);
+  font-weight: 600;
+}
+
+.badge-row {
+  display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+  margin-top: 16px;
+}
+.badge {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.badge-teal { background: rgba(46,196,182,0.15); color: var(--teal-dark); border: 1.5px solid rgba(46,196,182,0.4); }
+.badge-purple { background: rgba(155,93,229,0.15); color: var(--purple); border: 1.5px solid rgba(155,93,229,0.4); }
+.badge-yellow { background: rgba(255,221,87,0.3); color: #9a7e00; border: 1.5px solid rgba(255,221,87,0.6); }
+
+/* ===== PHONES ===== */
+.phones-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0;
+  padding: 30px 0 20px;
+  position: relative;
+}
+
+.phone-wrapper {
+  display: flex; flex-direction: column; align-items: center;
+  transition: transform 0.3s ease;
+}
+.phone-wrapper:hover { z-index: 10; }
+.phone-wrapper.left { transform: translateX(25px) rotate(-4deg); z-index: 1; }
+.phone-wrapper.left:hover { transform: translateX(15px) rotate(-4deg) translateY(-14px); }
+.phone-wrapper.center { z-index: 3; animation: centerFloat 5s ease-in-out infinite; }
+.phone-wrapper.center:hover { animation: none; transform: translateY(-14px); }
+.phone-wrapper.right { transform: translateX(-25px) rotate(4deg); z-index: 1; }
+.phone-wrapper.right:hover { transform: translateX(-15px) rotate(4deg) translateY(-14px); }
+
+@keyframes centerFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.phone-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gray);
+  margin-bottom: 10px;
+  opacity: 0.7;
+}
+
+.phone {
+  width: 210px;
+  background: #1c1c1e;
+  border-radius: 42px;
+  border: 2px solid rgba(255,255,255,0.1);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.3),
+    0 25px 70px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  overflow: hidden;
+}
+.phone-wrapper.center .phone {
+  width: 230px;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.3),
+    0 35px 90px rgba(0,0,0,0.35),
+    0 0 50px rgba(46,196,182,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.notch {
+  width: 88px; height: 22px;
+  background: #1c1c1e;
+  border-radius: 0 0 14px 14px;
+  margin: 0 auto;
+  position: relative; z-index: 2;
+}
+
+.screen { overflow: hidden; position: relative; }
+
+.bottom-bar {
+  height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  background: #1c1c1e;
+}
+.home-bar {
+  width: 80px; height: 4px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 2px;
+}
+
+/* ===== SCREEN 1: MENU ===== */
+.menu-screen {
+  background: linear-gradient(180deg, #e8e8ee 0%, #d4d4dc 100%);
+  min-height: 400px;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 20px 16px;
+  position: relative;
+}
+.menu-logo-area {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.menu-logo {
+  width: 110px; height: 110px;
+  background: linear-gradient(135deg, #4ecdc4, #9b5de5);
+  border-radius: 24px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 52px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  margin-bottom: 14px;
+}
+.menu-app-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 22px;
+  color: #333;
+  letter-spacing: 1px;
+}
+.menu-play-btn {
+  width: 100%;
+  height: 52px;
+  background: linear-gradient(135deg, #4ecdc4, #2ec4b6);
+  border-radius: 26px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 20px rgba(46,196,182,0.4);
+  margin-bottom: 10px;
+}
+.menu-play-text {
+  font-family: 'Fredoka One', cursive;
+  font-size: 22px;
+  color: white;
+  letter-spacing: 3px;
+}
+.menu-status {
+  font-size: 11px;
+  color: #666;
+  font-weight: 700;
+}
+
+/* ===== SCREEN 2: GAME (DRAWER) ===== */
+.game-screen-draw {
+  background: var(--teal);
+  min-height: 440px;
+  display: flex; flex-direction: column;
+}
+.game-top-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px 8px;
+}
+.game-back { font-size: 20px; }
+.game-score {
+  font-family: 'Fredoka One', cursive;
+  font-size: 18px;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.game-timer {
+  display: flex; align-items: center; gap: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 12px;
+  padding: 4px 8px;
+}
+.timer-icon { font-size: 12px; }
+.timer-text {
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  color: white;
+}
+
+/* Drawing canvas */
+.canvas-area {
+  margin: 0 14px;
+  aspect-ratio: 1;
+  background: white;
+  border-radius: 14px;
+  border: 4px solid #1a1a1a;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+.canvas-drawing {
+  position: absolute; inset: 0;
+  padding: 10px;
+}
+.canvas-eraser {
+  position: absolute; top: 8px; right: 8px;
+  width: 30px; height: 30px;
+  background: rgba(255,0,0,0.1);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+
+/* SVG doodle cat */
+svg.doodle-cat { width: 100%; height: 100%; }
+
+.guess-list {
+  margin: 10px 14px;
+  background: rgba(106,0,198,0.3);
+  border-radius: 16px;
+  padding: 8px 10px;
+  flex: 1;
+  overflow: hidden;
+}
+.guess-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 2px 0;
+}
+.guess-text {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+}
+.guess-thumb { font-size: 12px; }
+
+/* Prompt strip (bottom) */
+.prompt-strip {
+  background: rgba(0,0,0,0.25);
+  padding: 10px 14px 12px;
+}
+.prompt-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 1px;
+  display: flex; align-items: center; gap: 4px;
+}
+.prompt-word {
+  font-family: 'Fredoka One', cursive;
+  font-size: 22px;
+  color: var(--yellow);
+  letter-spacing: 2px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ===== SCREEN 3: GAME (GUESSER) ===== */
+.game-screen-guess {
+  background: rgba(255,221,87,0.35);
+  min-height: 400px;
+  display: flex; flex-direction: column;
+}
+.guess-prompt-strip {
+  background: rgba(100,100,100,0.25);
+  padding: 10px 14px 12px;
+}
+.guess-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--purple);
+  letter-spacing: 0.5px;
+  display: flex; align-items: center; gap: 4px;
+  margin-bottom: 6px;
+}
+.guess-input-row {
+  display: flex; gap: 6px; align-items: center;
+}
+.guess-input {
+  flex: 1;
+  height: 34px;
+  background: white;
+  border-radius: 17px;
+  display: flex; align-items: center; padding: 0 12px;
+}
+.guess-placeholder {
+  font-size: 10px;
+  color: #aaa;
+  font-style: italic;
+}
+.guess-send { font-size: 24px; }
+
+/* ===== FEATURES ===== */
+.features {
+  max-width: 860px;
+  margin: 40px auto 20px;
+  padding: 0 20px;
+}
+.section-label {
+  font-family: 'Fredoka One', cursive;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--teal-dark);
+  text-align: center;
+  margin-bottom: 24px;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+}
+.feat-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  border: 2px solid transparent;
+  transition: all 0.3s;
+}
+.feat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+.feat-card.teal { border-color: rgba(46,196,182,0.3); }
+.feat-card.purple { border-color: rgba(155,93,229,0.3); }
+.feat-card.yellow { border-color: rgba(255,221,87,0.6); }
+.feat-card.pink { border-color: rgba(247,37,133,0.3); }
+.feat-icon { font-size: 28px; margin-bottom: 10px; }
+.feat-name {
+  font-family: 'Fredoka One', cursive;
+  font-size: 14px;
+  color: var(--dark);
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+}
+.feat-desc {
+  font-size: 12px;
+  color: var(--gray);
+  line-height: 1.5;
+}
+
+/* Tech */
+.tech-section { text-align: center; padding: 10px 20px 50px; }
+.tech-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.tech-pill {
+  padding: 6px 16px;
+  background: white;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gray);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 1.5px solid rgba(0,0,0,0.07);
+}
+
+/* Animations */
+.fade-in { opacity: 0; animation: fadeUp 0.7s ease forwards; }
+.d1 { animation-delay: 0.1s; }
+.d2 { animation-delay: 0.25s; }
+.d3 { animation-delay: 0.4s; }
+.d4 { animation-delay: 0.55s; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<!-- Background doodles -->
+<div class="doodle-bg">
+  <div class="doodle-el" style="left:5%;top:15%;--size:50px;--dur:7s;--delay:0s;--rot0:-5deg;--rot1:8deg">✏️</div>
+  <div class="doodle-el" style="left:88%;top:10%;--size:44px;--dur:9s;--delay:1s;--rot0:5deg;--rot1:-8deg">🎨</div>
+  <div class="doodle-el" style="left:3%;top:55%;--size:40px;--dur:6s;--delay:2s;--rot0:0deg;--rot1:12deg">💡</div>
+  <div class="doodle-el" style="left:92%;top:60%;--size:48px;--dur:8s;--delay:0.5s;--rot0:-8deg;--rot1:5deg">⭐</div>
+  <div class="doodle-el" style="left:15%;top:85%;--size:36px;--dur:10s;--delay:3s;--rot0:3deg;--rot1:-6deg">🖊️</div>
+  <div class="doodle-el" style="left:80%;top:80%;--size:42px;--dur:7s;--delay:1.5s;--rot0:-3deg;--rot1:9deg">🎮</div>
+</div>
+
+<div class="page">
+
+<!-- Header -->
+<header class="fade-in">
+  <div class="app-icon">✏️</div>
+  <h1>FIGURE THE DOODLE</h1>
+  <div class="tagline">Draw it. Guess it. Win it!</div>
+  <div class="badge-row">
+    <span class="badge badge-teal">iOS App</span>
+    <span class="badge badge-purple">Multiplayer</span>
+    <span class="badge badge-yellow">GameKit</span>
+    <span class="badge badge-teal">SwiftUI</span>
+  </div>
+</header>
+
+<!-- Phones -->
+<div class="phones-section">
+
+  <!-- Phone 1: Menu -->
+  <div class="phone-wrapper left fade-in d1">
+    <div class="phone-label">Main Menu</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="menu-screen">
+          <div class="menu-logo-area">
+            <div class="menu-logo">✏️</div>
+            <div class="menu-app-name">Figure Doodle</div>
+          </div>
+          <div class="menu-play-btn">
+            <div class="menu-play-text">PLAY</div>
+          </div>
+          <div class="menu-status">● Authenticated</div>
+          <div style="height:16px;"></div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="home-bar"></div></div>
+    </div>
+  </div>
+
+  <!-- Phone 2: Game – Drawing mode (center) -->
+  <div class="phone-wrapper center fade-in d2">
+    <div class="phone-label">Drawing Mode</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="game-screen-draw">
+          <!-- Top bar -->
+          <div class="game-top-bar">
+            <div class="game-back">←</div>
+            <div class="game-score" style="font-family:'Fredoka One',cursive;color:rgba(255,221,87,1)">Score: 3</div>
+            <div class="game-timer">
+              <div class="timer-icon">🕐</div>
+              <div class="timer-text">42</div>
+            </div>
+          </div>
+
+          <!-- Canvas -->
+          <div class="canvas-area">
+            <div class="canvas-eraser">🧹</div>
+            <!-- SVG Cat doodle -->
+            <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+              <!-- body -->
+              <ellipse cx="80" cy="115" rx="42" ry="32" fill="none" stroke="#222" stroke-width="3.5" stroke-linecap="round"/>
+              <!-- head -->
+              <circle cx="80" cy="72" r="28" fill="none" stroke="#222" stroke-width="3.5"/>
+              <!-- ears -->
+              <polygon points="58,52 50,34 72,48" fill="none" stroke="#222" stroke-width="3" stroke-linejoin="round"/>
+              <polygon points="102,52 110,34 88,48" fill="none" stroke="#222" stroke-width="3" stroke-linejoin="round"/>
+              <!-- eyes -->
+              <circle cx="71" cy="69" r="4" fill="#222"/>
+              <circle cx="89" cy="69" r="4" fill="#222"/>
+              <!-- nose -->
+              <ellipse cx="80" cy="78" rx="3" ry="2" fill="#222"/>
+              <!-- mouth -->
+              <path d="M76 80 Q80 85 84 80" fill="none" stroke="#222" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- whiskers left -->
+              <line x1="53" y1="76" x2="72" y2="78" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+              <line x1="53" y1="81" x2="72" y2="80" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+              <!-- whiskers right -->
+              <line x1="107" y1="76" x2="88" y2="78" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+              <line x1="107" y1="81" x2="88" y2="80" stroke="#222" stroke-width="2" stroke-linecap="round"/>
+              <!-- tail -->
+              <path d="M122 120 Q148 105 140 88 Q135 75 122 85" fill="none" stroke="#222" stroke-width="3.5" stroke-linecap="round"/>
+              <!-- paws -->
+              <ellipse cx="62" cy="144" rx="12" ry="6" fill="none" stroke="#222" stroke-width="3"/>
+              <ellipse cx="98" cy="144" rx="12" ry="6" fill="none" stroke="#222" stroke-width="3"/>
+            </svg>
+          </div>
+
+          <!-- Past guesses -->
+          <div class="guess-list">
+            <div class="guess-item">
+              <div class="guess-text">animal</div>
+            </div>
+            <div class="guess-item">
+              <div class="guess-text">dog</div>
+            </div>
+            <div class="guess-item">
+              <div class="guess-text" style="color:#ffdd57">cat 🎉</div>
+              <div class="guess-thumb">👍</div>
+            </div>
+          </div>
+
+          <!-- Prompt -->
+          <div class="prompt-strip">
+            <div class="prompt-label">💬 DRAW:</div>
+            <div class="prompt-word">CAT</div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="home-bar"></div></div>
+    </div>
+  </div>
+
+  <!-- Phone 3: Game – Guessing mode -->
+  <div class="phone-wrapper right fade-in d3">
+    <div class="phone-label">Guessing Mode</div>
+    <div class="phone">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="game-screen-guess">
+          <!-- Top bar -->
+          <div class="game-top-bar" style="background:rgba(155,93,229,0.15);">
+            <div class="game-back" style="color:#7c3aed">←</div>
+            <div class="game-score" style="font-family:'Fredoka One',cursive;color:#7c3aed">Score: 3</div>
+            <div class="game-timer" style="background:rgba(155,93,229,0.15);">
+              <div class="timer-icon">🕐</div>
+              <div class="timer-text" style="color:#7c3aed">28</div>
+            </div>
+          </div>
+
+          <!-- Canvas (receiving drawing) -->
+          <div class="canvas-area" style="margin:0 14px;">
+            <!-- Same cat SVG but as if received -->
+            <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;opacity:0.85">
+              <ellipse cx="80" cy="115" rx="42" ry="32" fill="none" stroke="#333" stroke-width="3.5" stroke-linecap="round"/>
+              <circle cx="80" cy="72" r="28" fill="none" stroke="#333" stroke-width="3.5"/>
+              <polygon points="58,52 50,34 72,48" fill="none" stroke="#333" stroke-width="3" stroke-linejoin="round"/>
+              <polygon points="102,52 110,34 88,48" fill="none" stroke="#333" stroke-width="3" stroke-linejoin="round"/>
+              <circle cx="71" cy="69" r="4" fill="#333"/>
+              <circle cx="89" cy="69" r="4" fill="#333"/>
+              <ellipse cx="80" cy="78" rx="3" ry="2" fill="#333"/>
+              <path d="M76 80 Q80 85 84 80" fill="none" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="53" y1="76" x2="72" y2="78" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+              <line x1="53" y1="81" x2="72" y2="80" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+              <line x1="107" y1="76" x2="88" y2="78" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+              <line x1="107" y1="81" x2="88" y2="80" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+              <path d="M122 120 Q148 105 140 88 Q135 75 122 85" fill="none" stroke="#333" stroke-width="3.5" stroke-linecap="round"/>
+              <ellipse cx="62" cy="144" rx="12" ry="6" fill="none" stroke="#333" stroke-width="3"/>
+              <ellipse cx="98" cy="144" rx="12" ry="6" fill="none" stroke="#333" stroke-width="3"/>
+            </svg>
+          </div>
+
+          <!-- Past guesses (guesser side) -->
+          <div class="guess-list" style="background:rgba(100,100,120,0.2);">
+            <div class="guess-item">
+              <div class="guess-text" style="color:#555">rabbit</div>
+            </div>
+            <div class="guess-item">
+              <div class="guess-text" style="color:#555">animal</div>
+            </div>
+          </div>
+
+          <!-- Guess input -->
+          <div class="guess-prompt-strip">
+            <div class="guess-label">💬 FIGURE THE DRAWING!:</div>
+            <div class="guess-input-row">
+              <div class="guess-input">
+                <div class="guess-placeholder">Type your guess...</div>
+              </div>
+              <div class="guess-send" style="color:#7c3aed">➤</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-bar"><div class="home-bar"></div></div>
+    </div>
+  </div>
+
+</div><!-- /phones-section -->
+
+<!-- Features -->
+<div class="features fade-in d4">
+  <div class="section-label">✦ Key Features ✦</div>
+  <div class="features-grid">
+    <div class="feat-card teal">
+      <div class="feat-icon">🎮</div>
+      <div class="feat-name">Multiplayer</div>
+      <div class="feat-desc">Real-time 1v1 via Apple GameKit matchmaking</div>
+    </div>
+    <div class="feat-card purple">
+      <div class="feat-icon">✏️</div>
+      <div class="feat-name">PencilKit Canvas</div>
+      <div class="feat-desc">Freehand drawing with eraser, synced live</div>
+    </div>
+    <div class="feat-card yellow">
+      <div class="feat-icon">⏱️</div>
+      <div class="feat-name">Countdown Timer</div>
+      <div class="feat-desc">Shared timer keeps both players in sync</div>
+    </div>
+    <div class="feat-card pink">
+      <div class="feat-icon">🔀</div>
+      <div class="feat-name">Role Switching</div>
+      <div class="feat-desc">Drawer vs. guesser modes with distinct UI</div>
+    </div>
+  </div>
+</div>
+
+<!-- Tech Stack -->
+<div class="tech-section fade-in d4">
+  <div class="section-label">Built With</div>
+  <div class="tech-row">
+    <span class="tech-pill">SwiftUI</span>
+    <span class="tech-pill">PencilKit</span>
+    <span class="tech-pill">GameKit</span>
+    <span class="tech-pill">GKMatchDelegate</span>
+    <span class="tech-pill">GKMatchmakerVC</span>
+    <span class="tech-pill">ObservableObject</span>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

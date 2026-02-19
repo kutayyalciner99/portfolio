@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoodForYou – Portfolio Showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0c0c0f;
+  --surface: #131318;
+  --surface2: #1a1a22;
+  --amber: #f59e0b;
+  --amber-dim: #92600a;
+  --amber-glow: rgba(245,158,11,0.15);
+  --white: #ffffff;
+  --muted: #52526a;
+  --text: #d4d4e8;
+  --border: rgba(255,255,255,0.06);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% -10%, rgba(245,158,11,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 10% 60%, rgba(245,158,11,0.04) 0%, transparent 50%);
+}
+
+.page { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 24px 100px; }
+
+/* ── HERO ─── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  padding: 80px 0 60px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.1s forwards;
+}
+.hero-left {}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--amber-glow);
+  border: 1px solid rgba(245,158,11,0.25);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--amber);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+.hero-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(42px, 5vw, 72px);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 1.0;
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+}
+.hero-title .accent { color: var(--amber); }
+.hero-subtitle {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(16px, 2vw, 22px);
+  font-weight: 400;
+  color: var(--muted);
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
+}
+.hero-desc {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 440px;
+  margin-bottom: 32px;
+}
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.tag {
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.tag-amber { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+.tag-blue  { background: rgba(99,179,237,0.08);  color: #63b3ed;     border: 1px solid rgba(99,179,237,0.15); }
+.tag-green { background: rgba(72,187,120,0.08);  color: #48bb78;     border: 1px solid rgba(72,187,120,0.15); }
+.tag-purple{ background: rgba(167,139,250,0.08); color: #a78bfa;     border: 1px solid rgba(167,139,250,0.15); }
+
+/* ── PHONE STACK ─── */
+.hero-right {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0;
+  position: relative;
+}
+
+.phone-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+}
+.phone-wrap.back  { transform: translateX(28px) rotate(5deg) scale(0.88); z-index: 1; margin-bottom: 20px; }
+.phone-wrap.front { z-index: 2; animation: heroFloat 6s ease-in-out infinite; }
+@keyframes heroFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+.phone {
+  width: 200px;
+  background: #18181f;
+  border-radius: 40px;
+  border: 2px solid rgba(255,255,255,0.08);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08);
+  overflow: hidden;
+}
+.phone-wrap.front .phone {
+  width: 220px;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7), 0 0 60px rgba(245,158,11,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.notch { width: 80px; height: 20px; background: #18181f; border-radius: 0 0 12px 12px; margin: 0 auto; position: relative; z-index: 2; }
+.screen-area { overflow: hidden; position: relative; }
+.screen-area .screen-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 340px;
+  object-fit: cover;
+  object-position: top center;
+}
+.phone-wrap.front .screen-area .screen-img { min-height: 380px; }
+.bottom-home { height: 26px; display:flex; align-items:center; justify-content:center; }
+.home-pill { width: 72px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; }
+
+/* ── SCREEN: AI CHAT ─── */
+.screen-chat {
+  background: #000;
+  min-height: 380px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.chat-appbar {
+  padding: 10px 14px 8px;
+  display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.chat-logo {
+  background: white;
+  border-radius: 10px;
+  padding: 4px 10px;
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--amber);
+  letter-spacing: 1px;
+}
+
+/* Avatar video area */
+.avatar-area {
+  flex: 1;
+  background: linear-gradient(180deg, #0a0a12 0%, #1a1020 50%, #0a0a12 100%);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  min-height: 180px;
+}
+.avatar-area::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 60%;
+  background: linear-gradient(to top, #000, transparent);
+  z-index: 1;
+}
+/* Avatar silhouette */
+.avatar-figure {
+  width: 80px; height: 140px;
+  position: relative; z-index: 0;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.avatar-body {
+  width: 50px; height: 110px;
+  background: linear-gradient(180deg, #2a2040 0%, #1a1535 40%, #0d0a1a 100%);
+  border-radius: 25px 25px 10px 10px;
+  position: relative;
+}
+.avatar-head {
+  position: absolute;
+  top: -30px; left: 50%; transform: translateX(-50%);
+  width: 36px; height: 36px;
+  background: radial-gradient(circle at 40% 35%, #c8a878, #9a7050);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+.avatar-glow {
+  position: absolute; inset: -20px;
+  background: radial-gradient(ellipse at center, rgba(245,158,11,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.talking-indicator {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 3px; align-items: flex-end; z-index: 2;
+}
+.t-bar {
+  width: 3px; background: var(--amber); border-radius: 2px;
+  animation: wavebar var(--d,0.8s) ease-in-out var(--dl,0s) infinite;
+}
+@keyframes wavebar { 0%,100%{height:4px} 50%{height:var(--h,12px)} }
+
+.chat-controls {
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.8);
+}
+.control-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 8px;
+}
+.avatar-toggle {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid var(--amber);
+  overflow: hidden;
+  background: linear-gradient(135deg, #3a2060, #2a1540);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+}
+.chat-bubble-icon { font-size: 20px; }
+
+.mic-btn {
+  width: 54px; height: 54px; border-radius: 50%;
+  background: var(--amber);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 4px 20px rgba(245,158,11,0.5);
+  margin: 0 auto 8px;
+}
+
+.chat-messages {
+  padding: 6px 10px;
+}
+.msg {
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 9px;
+  color: white;
+  margin-bottom: 4px;
+  max-width: 80%;
+  line-height: 1.4;
+}
+.msg.user { background: rgba(245,158,11,0.3); margin-left: auto; text-align: right; }
+.msg.bot  { background: rgba(100,100,120,0.35); }
+
+/* ── SCREEN: SUGGESTION ─── */
+.screen-suggest {
+  background: linear-gradient(180deg, #0f0f18 0%, #1a1525 100%);
+  min-height: 340px;
+  display: flex; flex-direction: column;
+}
+.suggest-appbar {
+  padding: 10px 14px 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.quote-carousel {
+  margin: 8px 10px;
+  background: linear-gradient(135deg, #1e1830, #2a2040);
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid rgba(245,158,11,0.15);
+  min-height: 90px;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.quote-text {
+  font-style: italic;
+  font-size: 8.5px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+.quote-author {
+  font-size: 8px; font-weight: 600;
+  color: var(--amber);
+  letter-spacing: 0.5px;
+}
+.quote-star { font-size: 10px; color: var(--amber); }
+.carousel-dots { display:flex; justify-content:center; gap:4px; margin: 4px 0 8px; }
+.cdot { width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,0.2); }
+.cdot.active { background:var(--amber); width:12px; border-radius:3px; }
+
+.grid-section { padding: 0 10px 10px; flex: 1; }
+.grid-label { font-size: 8px; font-weight: 700; color: var(--muted); letter-spacing: 1.5px; text-transform:uppercase; margin-bottom: 6px; }
+.mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.mini-card {
+  border-radius: 10px;
+  height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.mini-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.5);
+}
+.mini-card-bg0 { background: linear-gradient(135deg, #1a3a5c, #0d2030); }
+.mini-card-bg1 { background: linear-gradient(135deg, #3a2040, #1a0d2a); }
+.mini-card-bg2 { background: linear-gradient(135deg, #1a3a20, #0d2010); }
+.mini-card-bg3 { background: linear-gradient(135deg, #3a2a10, #1a1408); }
+.mini-card span {
+  font-size: 7.5px;
+  font-weight: 700;
+  color: white;
+  position: relative; z-index: 1;
+  line-height: 1.3;
+}
+
+/* ── FEATURES SECTION ─── */
+.section {
+  margin-top: 80px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.4s forwards;
+}
+.section-header {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 32px;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--white);
+}
+.section-line { flex: 1; height: 1px; background: var(--border); }
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.feat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px 18px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.feat::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-color, var(--amber)), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.feat:hover { transform: translateY(-4px); border-color: rgba(245,158,11,0.2); }
+.feat:hover::before { opacity: 1; }
+
+.feat-icon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+.feat-icon.amber  { background: rgba(245,158,11,0.12); --accent-color: var(--amber); }
+.feat-icon.blue   { background: rgba(99,179,237,0.1); }
+.feat-icon.green  { background: rgba(72,187,120,0.1); }
+.feat-icon.purple { background: rgba(167,139,250,0.1); }
+
+.feat-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.feat-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── ARCHITECTURE ─── */
+.arch-section {
+  margin-top: 60px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.6s forwards;
+}
+.arch-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.arch-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+}
+.arch-card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--amber);
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.flow-steps { display: flex; flex-direction: column; gap: 8px; }
+.flow-step {
+  display: flex; align-items: center; gap: 10px;
+}
+.step-num {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--amber-glow);
+  border: 1px solid rgba(245,158,11,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: var(--amber);
+  flex-shrink: 0;
+}
+.step-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+.step-arrow { font-size: 10px; color: var(--muted); }
+
+.tech-list { display: flex; flex-direction: column; gap: 8px; }
+.tech-row-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  background: var(--surface2);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.tech-bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--amber); flex-shrink: 0; }
+.tech-name { font-size: 12px; color: var(--text); font-weight: 500; }
+.tech-role { font-size: 11px; color: var(--muted); margin-left: auto; }
+
+/* ── BOTTOM PILLS ─── */
+.bottom-section {
+  margin-top: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  animation: rise 0.9s ease 0.8s forwards;
+}
+.stack-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill {
+  padding: 7px 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--surface);
+  letter-spacing: 0.3px;
+  transition: all 0.2s;
+}
+.pill:hover { border-color: rgba(245,158,11,0.3); color: var(--amber); }
+
+@keyframes rise {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; padding: 50px 0 40px; }
+  .hero-right { display: none; }
+  .features-grid { grid-template-columns: 1fr 1fr; }
+  .arch-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 500px) {
+  .features-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="hero-dot"></div>
+        Flutter App · AI Powered
+      </div>
+      <div class="hero-title">Good<span class="accent">ForYou</span></div>
+      <div class="hero-subtitle">Entrepreneurship AI Companion</div>
+      <p class="hero-desc">
+        An entrepreneurship-focused AI assistant app. Delivers a unique experience with GPT-4 powered chat, real-time voice synthesis, and an animated avatar.
+      </p>
+      <div class="hero-tags">
+        <span class="tag tag-amber">Flutter</span>
+        <span class="tag tag-blue">GPT-4</span>
+        <span class="tag tag-green">OpenAI TTS</span>
+        <span class="tag tag-purple">PencilKit</span>
+        <span class="tag tag-amber">Speech-to-Text</span>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <!-- Back phone: App screenshot -->
+      <div class="phone-wrap back">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-area">
+            <img src="assets/goodforyou1.png" alt="GoodForYou app – suggestion screen" class="screen-img" />
+          </div>
+          <div class="bottom-home"><div class="home-pill"></div></div>
+        </div>
+      </div>
+
+      <!-- Front phone: App screenshot -->
+      <div class="phone-wrap front">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen-area">
+            <img src="assets/goodforyou2.png" alt="GoodForYou app – chat screen" class="screen-img" />
+          </div>
+          <div class="bottom-home"><div class="home-pill"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Key Features</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="features-grid">
+      <div class="feat">
+        <div class="feat-icon amber">🤖</div>
+        <div class="feat-name">GPT-4 Chat</div>
+        <div class="feat-desc">Customized AI chat experience with an entrepreneurship expert system prompt.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon blue">🔊</div>
+        <div class="feat-name">OpenAI TTS</div>
+        <div class="feat-desc">Real-time text-to-speech with Alloy & Nova voices and automatic playback.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon green">🎭</div>
+        <div class="feat-name">Video Avatar</div>
+        <div class="feat-desc">Male/female selectable, animated idle/talking video transitions based on conversation state.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon purple">🎙️</div>
+        <div class="feat-name">Speech-to-Text</div>
+        <div class="feat-desc">Voice query on long-press, text query in keyboard mode — dual input mode.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARCHITECTURE -->
+  <div class="arch-section">
+    <div class="section-header">
+      <div class="section-title">Architecture</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="arch-grid">
+      <div class="arch-card">
+        <div class="arch-card-title">⚡ AI Flow</div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="step-num">1</div>
+            <div class="step-text">User enters query by voice or text</div>
+          </div>
+          <div class="step-arrow" style="margin-left:11px">↓</div>
+          <div class="flow-step">
+            <div class="step-num">2</div>
+            <div class="step-text">Speech-to-Text → text is resolved</div>
+          </div>
+          <div class="step-arrow" style="margin-left:11px">↓</div>
+          <div class="flow-step">
+            <div class="step-num">3</div>
+            <div class="step-text">Sent to GPT-4 API and response is received</div>
+          </div>
+          <div class="step-arrow" style="margin-left:11px">↓</div>
+          <div class="flow-step">
+            <div class="step-num">4</div>
+            <div class="step-text">Audio file is generated with OpenAI TTS</div>
+          </div>
+          <div class="step-arrow" style="margin-left:11px">↓</div>
+          <div class="flow-step">
+            <div class="step-num">5</div>
+            <div class="step-text">Avatar switches to talking mode, audio plays</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-card">
+        <div class="arch-card-title">🛠 Tech Stack</div>
+        <div class="tech-list">
+          <div class="tech-row-item">
+            <div class="tech-bullet"></div>
+            <div class="tech-name">Flutter</div>
+            <div class="tech-role">UI Framework</div>
+          </div>
+          <div class="tech-row-item">
+            <div class="tech-bullet"></div>
+            <div class="tech-name">chat_gpt_sdk</div>
+            <div class="tech-role">GPT-4 Integration</div>
+          </div>
+          <div class="tech-row-item">
+            <div class="tech-bullet"></div>
+            <div class="tech-name">OpenAI TTS API</div>
+            <div class="tech-role">Voice Synthesis</div>
+          </div>
+          <div class="tech-row-item">
+            <div class="tech-bullet"></div>
+            <div class="tech-name">speech_to_text</div>
+            <div class="tech-role">Voice Input</div>
+          </div>
+          <div class="tech-row-item">
+            <div class="tech-bullet"></div>
+            <div class="tech-name">flutter_sound</div>
+            <div class="tech-role">Audio Playback</div>
+          </div>
+          <div class="tech-row-item">
+            <div class="tech-bullet"></div>
+            <div class="tech-name">video_player</div>
+            <div class="tech-role">Avatar Animation</div>
+          </div>
+          <div class="tech-row-item">
+            <div class="tech-bullet"></div>
+            <div class="tech-name">shared_preferences</div>
+            <div class="tech-role">Local Storage</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="bottom-section">
+    <div class="stack-pills">
+      <span class="pill">Flutter</span>
+      <span class="pill">GPT-4</span>
+      <span class="pill">OpenAI TTS</span>
+      <span class="pill">Speech-to-Text</span>
+      <span class="pill">Video Player</span>
+      <span class="pill">FlutterSound</span>
+      <span class="pill">Infinite Carousel</span>
+    </div>
+    <div style="font-size:12px;color:var(--muted);">Flutter · iOS & Android</div>
+  </div>
+
+</div>
+</body>
+</html>

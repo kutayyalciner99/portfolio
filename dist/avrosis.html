@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AVROSIS – Portfolio Showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #04080f;
+  --surface:  #080e1a;
+  --surface2: #0d1525;
+  --blue:     #3b82f6;
+  --blue-bright: #60a5fa;
+  --blue-glow: rgba(59,130,246,0.14);
+  --cyan:     #06b6d4;
+  --orange:   #f97316;
+  --white:    #f1f5f9;
+  --muted:    #475569;
+  --text:     #94a3b8;
+  --border:   rgba(59,130,246,0.12);
+  --grid-line: rgba(59,130,246,0.05);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Grid background */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(59,130,246,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 0% 60%,  rgba(6,182,212,0.05) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 100% 80%, rgba(249,115,22,0.04) 0%, transparent 50%);
+}
+
+.page { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 0 24px 100px; }
+
+/* ── HERO ─────────────────────────────── */
+.hero {
+  padding: 80px 0 64px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  opacity: 0;
+  animation: rise 0.9s ease 0.1s forwards;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--blue-glow);
+  border: 1px solid rgba(59,130,246,0.2);
+  border-radius: 4px;
+  padding: 5px 12px;
+  margin-bottom: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--blue-bright);
+  text-transform: uppercase;
+}
+.ey-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-bright); animation: blink 1.8s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+.hero-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(38px, 5vw, 68px);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.0;
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+}
+.hero-title .dim { color: var(--blue-bright); }
+
+.hero-sub {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+
+.hero-desc {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 460px;
+  margin-bottom: 32px;
+}
+
+.hero-stats {
+  display: flex; gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+  margin-bottom: 28px;
+}
+.stat-item {
+  padding: 14px 24px;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Orbitron', monospace;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--blue-bright);
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-lbl { font-size: 9px; font-weight: 600; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; }
+
+.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.htag {
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border: 1px solid;
+}
+.htag-b { background: rgba(59,130,246,0.08);  color: var(--blue-bright); border-color: rgba(59,130,246,0.2); }
+.htag-c { background: rgba(6,182,212,0.08);    color: var(--cyan);        border-color: rgba(6,182,212,0.2); }
+.htag-o { background: rgba(249,115,22,0.08);   color: var(--orange);      border-color: rgba(249,115,22,0.2); }
+
+/* ── BROWSER MOCKUP ─── */
+.hero-right {
+  opacity: 0;
+  animation: rise 0.9s ease 0.3s forwards;
+}
+
+.hero-hero-img {
+  width: 100%;
+  max-width: 560px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(59,130,246,0.15);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.5),
+    0 30px 80px rgba(0,0,0,0.7),
+    0 0 60px rgba(59,130,246,0.08);
+}
+.hero-hero-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: top;
+}
+
+.browser {
+  background: #0a1020;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(59,130,246,0.15);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.5),
+    0 30px 80px rgba(0,0,0,0.7),
+    0 0 60px rgba(59,130,246,0.08);
+}
+
+.chrome {
+  height: 38px;
+  background: #070d1a;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex; align-items: center; padding: 0 12px; gap: 10px;
+}
+.dots { display: flex; gap: 5px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dr { background: #ff5f57; } .dy { background: #febc2e; } .dg { background: #28c840; }
+
+.addr {
+  flex: 1; height: 22px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 4px;
+  display: flex; align-items: center; padding: 0 10px; gap: 5px;
+}
+.addr-lock { font-size: 9px; opacity: 0.4; }
+.addr-url { font-size: 11px; color: rgba(255,255,255,0.35); font-family: 'Inter', sans-serif; }
+
+/* Site content */
+.site-content { background: #f8fafc; }
+
+/* Site nav */
+.site-nav {
+  background: #0f172a;
+  padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.site-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 900;
+  color: white;
+  letter-spacing: 2px;
+}
+.site-nav-links {
+  display: flex; gap: 12px;
+}
+.nav-link {
+  font-size: 8px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.5px;
+}
+.nav-link.active { color: #60a5fa; }
+.site-nav-actions { display: flex; gap: 6px; align-items: center; }
+.nav-search {
+  width: 80px; height: 18px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 3px;
+  display: flex; align-items: center; padding: 0 6px;
+}
+.search-placeholder { font-size: 7px; color: rgba(255,255,255,0.3); }
+.nav-cart {
+  background: #3b82f6;
+  border-radius: 3px;
+  padding: 3px 8px;
+  font-size: 7px;
+  font-weight: 700;
+  color: white;
+}
+
+/* Hero banner */
+.site-banner {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+  padding: 18px 16px 14px;
+  position: relative;
+  overflow: hidden;
+}
+.site-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 30% 50%, rgba(59,130,246,0.15) 0%, transparent 60%);
+}
+.banner-tag {
+  display: inline-block;
+  background: rgba(59,130,246,0.2);
+  border: 1px solid rgba(59,130,246,0.3);
+  border-radius: 2px;
+  padding: 2px 6px;
+  font-size: 7px;
+  font-weight: 700;
+  color: #60a5fa;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+  position: relative; z-index: 1;
+}
+.banner-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 15px;
+  font-weight: 900;
+  color: white;
+  letter-spacing: 2px;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  position: relative; z-index: 1;
+}
+.banner-sub {
+  font-size: 7px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  position: relative; z-index: 1;
+}
+.banner-btn {
+  display: inline-block;
+  background: #3b82f6;
+  padding: 4px 12px;
+  border-radius: 3px;
+  font-size: 7px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 1px;
+  position: relative; z-index: 1;
+}
+
+/* Trust bar */
+.trust-bar {
+  background: #f1f5f9;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 5px 16px;
+  display: flex; justify-content: space-around;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 6.5px;
+  font-weight: 700;
+  color: #475569;
+  letter-spacing: 0.3px;
+}
+.trust-icon { font-size: 9px; }
+
+/* Category strips */
+.cat-strip {
+  padding: 10px 16px;
+  background: white;
+  border-bottom: 1px solid #f1f5f9;
+}
+.cat-strip-title {
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.cat-icons {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.cat-icon-pill {
+  display: flex; align-items: center; gap: 4px;
+  padding: 3px 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 3px;
+  font-size: 7px;
+  font-weight: 600;
+  color: #475569;
+}
+.cat-dot { width: 5px; height: 5px; border-radius: 50%; }
+.cd-blue { background: #3b82f6; }
+.cd-red { background: #ef4444; }
+.cd-orange { background: #f97316; }
+.cd-green { background: #22c55e; }
+.cd-purple { background: #8b5cf6; }
+
+/* Product grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 10px 16px;
+  background: #f8fafc;
+}
+.prod-card {
+  background: white;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  transition: box-shadow 0.2s;
+}
+.prod-img {
+  height: 52px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.prod-img.ms  { background: linear-gradient(135deg, #0078d4, #005fa3); }
+.prod-img.sec { background: linear-gradient(135deg, #1e3a5f, #0f2040); }
+.prod-img.des { background: linear-gradient(135deg, #2d1b69, #1a0d40); }
+.prod-logo { font-size: 18px; }
+.prod-badge {
+  position: absolute; top: 4px; right: 4px;
+  background: #ef4444;
+  color: white;
+  font-size: 6px; font-weight: 800;
+  padding: 1px 4px; border-radius: 2px;
+  letter-spacing: 0.5px;
+}
+.prod-info { padding: 6px 8px; }
+.prod-vendor { font-size: 6px; font-weight: 700; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 2px; }
+.prod-name { font-size: 7.5px; font-weight: 700; color: #1e293b; line-height: 1.3; margin-bottom: 4px; }
+.prod-price { font-size: 8px; font-weight: 800; color: #0f172a; }
+.prod-price .currency { font-size: 6px; color: #94a3b8; margin-left: 2px; }
+
+/* ── CATEGORIES GRID ─── */
+.section {
+  margin-top: 72px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.4s forwards;
+}
+.sec-head { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+.sec-title { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 700; color: var(--white); letter-spacing: 2px; white-space: nowrap; }
+.sec-line { flex: 1; height: 1px; background: var(--border); }
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+.cat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.cat-card::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: var(--bar-color, var(--blue));
+  transform: scaleX(0);
+  transition: transform 0.3s;
+  transform-origin: left;
+}
+.cat-card:hover { transform: translateY(-4px); border-color: rgba(59,130,246,0.25); }
+.cat-card:hover::before { transform: scaleX(1); }
+.cat-emoji { font-size: 24px; margin-bottom: 10px; }
+.cat-name { font-size: 11px; font-weight: 700; color: var(--white); margin-bottom: 4px; letter-spacing: 0.3px; }
+.cat-count { font-size: 10px; color: var(--muted); }
+
+/* ── FEATURES ─── */
+.feat-section {
+  margin-top: 60px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.55s forwards;
+}
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.feat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px 16px;
+  transition: all 0.3s;
+}
+.feat-card:hover { border-color: rgba(59,130,246,0.3); transform: translateY(-3px); }
+.feat-ic {
+  width: 38px; height: 38px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+.fi-b { background: rgba(59,130,246,0.12); }
+.fi-c { background: rgba(6,182,212,0.10); }
+.fi-o { background: rgba(249,115,22,0.10); }
+.fi-g { background: rgba(34,197,94,0.10); }
+.feat-name { font-size: 12px; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+.feat-desc { font-size: 11.5px; color: var(--muted); line-height: 1.6; }
+
+/* ── BRANDS MARQUEE ─── */
+.brands-section {
+  margin-top: 60px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.65s forwards;
+}
+.brands-track-wrap {
+  overflow: hidden;
+  position: relative;
+  padding: 4px 0;
+}
+.brands-track-wrap::before,
+.brands-track-wrap::after {
+  content: '';
+  position: absolute; top: 0; bottom: 0; width: 80px; z-index: 2; pointer-events: none;
+}
+.brands-track-wrap::before { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
+.brands-track-wrap::after  { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
+
+.brands-track {
+  display: flex; gap: 12px;
+  animation: scroll 20s linear infinite;
+  width: max-content;
+}
+@keyframes scroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+.brand-pill {
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+
+/* ── CTA ─── */
+.cta-section {
+  margin-top: 60px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 48px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  animation: rise 0.9s ease 0.75s forwards;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 50% 100% at 0% 50%, rgba(59,130,246,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+.cta-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.cta-sub { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 400px; }
+.cta-btns { display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
+.btn-primary {
+  padding: 12px 24px;
+  background: var(--blue);
+  color: white;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  display: inline-block;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-outline {
+  padding: 12px 24px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-block;
+}
+.btn-outline:hover { border-color: rgba(59,130,246,0.3); color: var(--blue-bright); }
+
+/* ── TECH ROW ─── */
+.tech-row {
+  display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+  margin-top: 48px; padding-top: 36px;
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  animation: rise 0.9s ease 0.9s forwards;
+}
+.tpill {
+  padding: 5px 14px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 11px; font-weight: 600;
+  color: var(--muted);
+  background: var(--surface);
+  letter-spacing: 0.3px;
+  transition: all 0.2s;
+}
+.tpill:hover { border-color: rgba(59,130,246,0.25); color: var(--blue-bright); }
+
+@keyframes rise { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 36px; padding: 48px 0 36px; }
+  .cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .feat-grid { grid-template-columns: 1fr 1fr; }
+  .cta-section { flex-direction: column; text-align: center; }
+}
+@media (max-width: 560px) {
+  .cat-grid { grid-template-columns: 1fr 1fr; }
+  .feat-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow"><div class="ey-dot"></div>E-Commerce · Software License Platform</div>
+      <div class="hero-title">AVRO<span class="dim">SIS</span></div>
+      <div class="hero-sub">IT · Authorized Distributor</div>
+      <p class="hero-desc">Fully authorized e-commerce platform offering original software licenses from Microsoft, Adobe, Autodesk and dozens of global brands to individual and corporate customers.</p>
+
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">50+</span>
+          <span class="stat-lbl">Brands</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">100%</span>
+          <span class="stat-lbl">Original License</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">e-Invoice</span>
+          <span class="stat-lbl">Guaranteed</span>
+        </div>
+      </div>
+
+      <div class="hero-tags">
+        <span class="htag htag-b">Shopify</span>
+        <span class="htag htag-c">E-Commerce</span>
+        <span class="htag htag-o">iyzico</span>
+        <span class="htag htag-b">Corporate</span>
+        <span class="htag htag-c">Digital License</span>
+      </div>
+    </div>
+
+    <!-- Hero image -->
+    <div class="hero-right">
+      <div class="hero-hero-img">
+        <img src="assets/avrosis.png" alt="AVROSIS — Graphics & Design Software" loading="eager" />
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORIES -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-title">CATEGORIES</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card" style="--bar-color:#0078d4">
+        <div class="cat-emoji">🪟</div>
+        <div class="cat-name">Microsoft</div>
+        <div class="cat-count">Windows · Office · Server</div>
+      </div>
+      <div class="cat-card" style="--bar-color:#ef4444">
+        <div class="cat-emoji">🛡️</div>
+        <div class="cat-name">Security</div>
+        <div class="cat-count">Kaspersky · McAfee · ESET</div>
+      </div>
+      <div class="cat-card" style="--bar-color:#8b5cf6">
+        <div class="cat-emoji">🎨</div>
+        <div class="cat-name">Graphics & Design</div>
+        <div class="cat-count">Adobe · CorelDRAW · AutoCAD</div>
+      </div>
+      <div class="cat-card" style="--bar-color:#f97316">
+        <div class="cat-emoji">⚙️</div>
+        <div class="cat-name">Engineering</div>
+        <div class="cat-count">SolidWorks · MATLAB · Lumion</div>
+      </div>
+      <div class="cat-card" style="--bar-color:#22c55e">
+        <div class="cat-emoji">🎓</div>
+        <div class="cat-name">Academic & Government</div>
+        <div class="cat-count">Enterprise · Education Licenses</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="feat-section">
+    <div class="sec-head">
+      <div class="sec-title">WHY AVROSIS?</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-ic fi-b">✅</div>
+        <div class="feat-name">Authorized Distributor</div>
+        <div class="feat-desc">All products are original and sourced through authorized channels. 100% compliant in audits.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ic fi-c">📄</div>
+        <div class="feat-name">e-Invoice Guarantee</div>
+        <div class="feat-desc">VAT-inclusive e-invoice issued for every purchase. Corporate accounting compliant.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ic fi-o">💳</div>
+        <div class="feat-name">Secure Payment</div>
+        <div class="feat-desc">Safe payment by credit or debit card via iyzico infrastructure.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-ic fi-g">🔄</div>
+        <div class="feat-name">Free Returns</div>
+        <div class="feat-desc">Free returns and customer support if you're not satisfied with your purchase.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BRANDS MARQUEE -->
+  <div class="brands-section">
+    <div class="sec-head">
+      <div class="sec-title">BRANDS</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="brands-track-wrap">
+      <div class="brands-track">
+        <!-- First set -->
+        <div class="brand-pill">Microsoft</div>
+        <div class="brand-pill">Adobe</div>
+        <div class="brand-pill">Autodesk</div>
+        <div class="brand-pill">Kaspersky</div>
+        <div class="brand-pill">McAfee</div>
+        <div class="brand-pill">CorelDRAW</div>
+        <div class="brand-pill">SolidWorks</div>
+        <div class="brand-pill">MATLAB</div>
+        <div class="brand-pill">Symantec</div>
+        <div class="brand-pill">Trellix</div>
+        <div class="brand-pill">ABBYY</div>
+        <div class="brand-pill">Camtasia</div>
+        <div class="brand-pill">Blancco</div>
+        <div class="brand-pill">Netwrix</div>
+        <div class="brand-pill">SketchUp Pro</div>
+        <div class="brand-pill">Lumion 2024</div>
+        <div class="brand-pill">Foxit</div>
+        <div class="brand-pill">Navicat+</div>
+        <!-- Duplicate for loop -->
+        <div class="brand-pill">Microsoft</div>
+        <div class="brand-pill">Adobe</div>
+        <div class="brand-pill">Autodesk</div>
+        <div class="brand-pill">Kaspersky</div>
+        <div class="brand-pill">McAfee</div>
+        <div class="brand-pill">CorelDRAW</div>
+        <div class="brand-pill">SolidWorks</div>
+        <div class="brand-pill">MATLAB</div>
+        <div class="brand-pill">Symantec</div>
+        <div class="brand-pill">Trellix</div>
+        <div class="brand-pill">ABBYY</div>
+        <div class="brand-pill">Camtasia</div>
+        <div class="brand-pill">Blancco</div>
+        <div class="brand-pill">Netwrix</div>
+        <div class="brand-pill">SketchUp Pro</div>
+        <div class="brand-pill">Lumion 2024</div>
+        <div class="brand-pill">Foxit</div>
+        <div class="brand-pill">Navicat+</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div>
+      <div class="cta-title">AVROSIS.COM</div>
+      <p class="cta-sub">Trusted source for original software licenses — from individual users to enterprises. Based in Kadıköy, Istanbul — nationwide service in Turkey.</p>
+    </div>
+    <div class="cta-btns">
+      <a href="https://avrosis.com" target="_blank" class="btn-primary">Visit Site →</a>
+      <a href="https://avrosis.com/collections/marka" target="_blank" class="btn-outline">All Products</a>
+    </div>
+  </div>
+
+  <!-- TECH -->
+  <div class="tech-row">
+    <span class="tpill">Shopify</span>
+    <span class="tpill">E-Commerce</span>
+    <span class="tpill">iyzico Payment</span>
+    <span class="tpill">Digital License</span>
+    <span class="tpill">Corporate Sales</span>
+    <span class="tpill">e-Invoice</span>
+    <span class="tpill">Nationwide</span>
+    <span class="tpill">50+ Brands</span>
+  </div>
+
+</div>
+</body>
+</html>

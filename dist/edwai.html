@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>edwai – Portfolio Showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #07050f;
+  --surface:   #0f0b1e;
+  --surface2:  #160e2a;
+  --purple:    #8b5cf6;
+  --purple-b:  #a78bfa;
+  --purple-d:  #6d28d9;
+  --purple-g:  rgba(139,92,246,0.15);
+  --violet:    #7c3aed;
+  --pink:      #ec4899;
+  --pink-d:    rgba(236,72,153,0.12);
+  --white:     #faf5ff;
+  --muted:     #6b5f8a;
+  --text:      #c4b5fd;
+  --border:    rgba(139,92,246,0.15);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -5%,  rgba(139,92,246,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 0%  50%,   rgba(124,58,237,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 100% 80%,  rgba(236,72,153,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 30% 30% at 70%  30%,  rgba(167,139,250,0.06) 0%, transparent 40%);
+}
+
+/* Floating orbs */
+.orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orbDrift var(--d,20s) ease-in-out infinite;
+}
+.orb1 { width:300px;height:300px; background:rgba(139,92,246,0.12); top:-50px; left:-80px; --d:18s; }
+.orb2 { width:250px;height:250px; background:rgba(236,72,153,0.08); bottom:100px; right:-60px; --d:22s; animation-direction:reverse; }
+.orb3 { width:180px;height:180px; background:rgba(124,58,237,0.10); top:40%; left:60%; --d:15s; }
+@keyframes orbDrift { 0%,100%{transform:translate(0,0)} 33%{transform:translate(30px,-20px)} 66%{transform:translate(-20px,30px)} }
+
+.page { position:relative; z-index:1; max-width:1180px; margin:0 auto; padding:0 24px 100px; }
+
+/* ── HERO ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+  padding: 80px 0 60px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.1s forwards;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--purple-g);
+  border: 1px solid rgba(139,92,246,0.25);
+  border-radius: 30px;
+  padding: 6px 16px;
+  margin-bottom: 22px;
+}
+.ey-dot { width:7px;height:7px;border-radius:50%;background:var(--purple-b);animation:blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.7)} }
+.ey-text { font-size:11px;font-weight:600;letter-spacing:2px;color:var(--purple-b);text-transform:uppercase; }
+
+.hero-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(52px, 6.5vw, 88px);
+  font-weight: 800;
+  color: var(--white);
+  line-height: 0.95;
+  letter-spacing: -2px;
+  margin-bottom: 8px;
+}
+.hero-title .grad {
+  background: linear-gradient(135deg, #a78bfa, #ec4899, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-tagline {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 20px;
+  font-weight: 300;
+  letter-spacing: 0.3px;
+}
+
+.hero-desc {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--muted);
+  max-width: 460px;
+  margin-bottom: 32px;
+}
+
+/* Quote box */
+.quote-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 28px;
+  position: relative;
+  overflow: hidden;
+}
+.quote-box::before {
+  content: '"';
+  position: absolute; top: -10px; left: 12px;
+  font-size: 80px;
+  color: var(--purple);
+  opacity: 0.12;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.quote-text {
+  font-size: 14px;
+  font-style: italic;
+  color: var(--purple-b);
+  line-height: 1.7;
+  position: relative; z-index: 1;
+}
+
+.hero-tags { display:flex;gap:8px;flex-wrap:wrap; }
+.htag {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border: 1px solid;
+}
+.ht-p { background:rgba(139,92,246,0.1); color:var(--purple-b); border-color:rgba(139,92,246,0.25); }
+.ht-pk{ background:rgba(236,72,153,0.08); color:#f9a8d4; border-color:rgba(236,72,153,0.2); }
+.ht-v { background:rgba(167,139,250,0.08); color:#c4b5fd; border-color:rgba(167,139,250,0.2); }
+
+/* ── PHONES ── */
+.phones-area {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0;
+  position: relative;
+}
+
+.pw { display:flex;flex-direction:column;align-items:center; }
+.pw.back  { transform:translateX(28px) rotate(5deg) scale(0.86); z-index:1; margin-bottom:20px; }
+.pw.front { z-index:2; animation:pFloat 5s ease-in-out infinite; }
+@keyframes pFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+.phone {
+  width: 198px;
+  background: #100c20;
+  border-radius: 42px;
+  border: 2px solid rgba(139,92,246,0.18);
+  overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.5), 0 30px 80px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.pw.front .phone {
+  width: 216px;
+  border-color: rgba(139,92,246,0.35);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.5), 0 40px 100px rgba(0,0,0,0.7), 0 0 70px rgba(139,92,246,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+.notch { width:80px;height:20px;background:#100c20;border-radius:0 0 12px 12px;margin:0 auto; }
+.scr { overflow:hidden;position:relative; }
+.hbar { height:26px;display:flex;align-items:center;justify-content:center; }
+.hpill { width:70px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px; }
+
+/* ── SCREEN A: ONBOARDING / CHAT ── */
+.s-chat {
+  background: linear-gradient(170deg, #0a0618 0%, #130a28 40%, #0a0618 100%);
+  min-height: 400px;
+  display: flex; flex-direction: column;
+}
+.s-nav {
+  padding: 10px 14px 8px;
+  display: flex; align-items: center; justify-content: center;
+  border-bottom: 1px solid rgba(139,92,246,0.1);
+}
+.s-logo {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 16px; font-weight: 800;
+  background: linear-gradient(135deg, #a78bfa, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 1px;
+}
+
+/* Avatar hero area */
+.avatar-section {
+  padding: 14px 14px 8px;
+  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+}
+.avatar-ring {
+  width: 76px; height: 76px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  padding: 2px;
+  margin-bottom: 8px;
+  box-shadow: 0 0 30px rgba(139,92,246,0.4);
+  position: relative;
+}
+.avatar-ring::after {
+  content: '';
+  position: absolute; inset: -4px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(139,92,246,0.3);
+  animation: ringPulse 2s ease-in-out infinite;
+}
+@keyframes ringPulse { 0%,100%{transform:scale(1);opacity:0.6} 50%{transform:scale(1.08);opacity:0.2} }
+
+.avatar-face {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(150deg, #2e1065 0%, #4c1d95 40%, #6d28d9 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px;
+  overflow: hidden;
+  position: relative;
+}
+.avatar-face::before {
+  content: '';
+  position: absolute;
+  width: 40px; height: 25px;
+  background: radial-gradient(ellipse at center, rgba(196,181,253,0.4) 0%, transparent 70%);
+  bottom: 10px;
+  border-radius: 50%;
+}
+
+.avatar-greeting {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 12px; font-weight: 700;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 3px;
+  letter-spacing: 0.3px;
+}
+.avatar-sub {
+  font-size: 8.5px;
+  color: rgba(196,181,253,0.6);
+  text-align: center;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+/* Chat bubbles */
+.chat-area { padding: 0 12px 8px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.bubble {
+  padding: 7px 10px;
+  border-radius: 10px;
+  font-size: 8.5px;
+  line-height: 1.5;
+  max-width: 82%;
+}
+.bubble.bot {
+  background: linear-gradient(135deg, rgba(109,40,217,0.35), rgba(139,92,246,0.2));
+  border: 1px solid rgba(139,92,246,0.2);
+  color: #e9d5ff;
+  align-self: flex-start;
+  border-bottom-left-radius: 3px;
+}
+.bubble.user {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.7);
+  align-self: flex-end;
+  border-bottom-right-radius: 3px;
+}
+
+/* Input bar */
+.input-bar {
+  margin: 0 12px 10px;
+  height: 30px;
+  background: rgba(139,92,246,0.08);
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 15px;
+  display: flex; align-items: center; padding: 0 10px; gap: 6px;
+}
+.input-ph { font-size: 8px; color: rgba(196,181,253,0.4); flex: 1; }
+.input-send {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px;
+}
+
+/* ── SCREEN B: FEATURES ── */
+.s-features {
+  background: linear-gradient(160deg, #0d0820 0%, #180f30 50%, #0d0820 100%);
+  min-height: 360px;
+  display: flex; flex-direction: column;
+}
+
+.feat-header {
+  padding: 10px 14px 8px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.feat-welcome {
+  font-size: 8px; color: rgba(196,181,253,0.5);
+  letter-spacing: 0.5px; text-transform: uppercase; font-weight: 600;
+}
+
+.feat-hero {
+  margin: 4px 12px 10px;
+  background: linear-gradient(135deg, rgba(109,40,217,0.25), rgba(139,92,246,0.15));
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+}
+.feat-hero-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 11px; font-weight: 800;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+.feat-hero-sub { font-size: 7.5px; color: rgba(196,181,253,0.6); font-style: italic; }
+
+.feat-list { padding: 0 12px 8px; display: flex; flex-direction: column; gap: 6px; }
+.feat-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 9px;
+  background: rgba(139,92,246,0.06);
+  border: 1px solid rgba(139,92,246,0.12);
+  border-radius: 8px;
+}
+.feat-item-icon {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: linear-gradient(135deg, rgba(139,92,246,0.3), rgba(236,72,153,0.2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; flex-shrink: 0;
+}
+.feat-item-text { font-size: 8px; color: #e9d5ff; font-weight: 500; }
+
+/* Pricing badge */
+.pricing-badge {
+  margin: 0 12px 10px;
+  background: linear-gradient(135deg, #4c1d95, #7c3aed);
+  border-radius: 10px;
+  padding: 8px 10px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.price-label { font-size: 7px; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 1px; text-transform: uppercase; }
+.price-value { font-family: 'Bricolage Grotesque', sans-serif; font-size: 13px; font-weight: 800; color: white; }
+.price-period { font-size: 6.5px; color: rgba(255,255,255,0.5); }
+.price-btn {
+  background: rgba(255,255,255,0.15);
+  border-radius: 6px; padding: 4px 8px;
+  font-size: 7px; font-weight: 700; color: white;
+}
+
+/* ── FEATURES SECTION ── */
+.section {
+  margin-top: 80px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.4s forwards;
+}
+.sec-head { display:flex;align-items:center;gap:16px;margin-bottom:28px; }
+.sec-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 28px; font-weight: 700;
+  color: var(--white);
+  white-space: nowrap;
+  letter-spacing: -0.5px;
+}
+.sec-line { flex:1;height:1px;background:var(--border); }
+
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.fg-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.fg-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 0% 0%, rgba(139,92,246,0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+.fg-card:hover { transform:translateY(-5px); border-color:rgba(139,92,246,0.3); }
+.fg-card:hover .fg-icon { transform:scale(1.1) rotate(-5deg); }
+
+.fg-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  margin-bottom: 14px;
+  transition: transform 0.3s;
+}
+.fgi-1 { background: linear-gradient(135deg, rgba(139,92,246,0.25), rgba(109,40,217,0.15)); }
+.fgi-2 { background: linear-gradient(135deg, rgba(236,72,153,0.2),  rgba(190,24,93,0.12)); }
+.fgi-3 { background: linear-gradient(135deg, rgba(167,139,250,0.2), rgba(139,92,246,0.12)); }
+.fgi-4 { background: linear-gradient(135deg, rgba(196,181,253,0.15),rgba(139,92,246,0.1)); }
+.fgi-5 { background: linear-gradient(135deg, rgba(244,114,182,0.2), rgba(236,72,153,0.1)); }
+.fgi-6 { background: linear-gradient(135deg, rgba(139,92,246,0.2), rgba(79,70,229,0.15)); }
+
+.fg-name { font-family:'Bricolage Grotesque',sans-serif; font-size:14px;font-weight:700;color:var(--white);margin-bottom:6px; }
+.fg-desc { font-size:12.5px;color:var(--muted);line-height:1.65; }
+
+/* ── CHANNELS ── */
+.channels-section {
+  margin-top: 60px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.55s forwards;
+}
+.channels-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.ch-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 14px;
+  text-align: center;
+  transition: all 0.3s;
+}
+.ch-card:hover { transform:translateY(-4px); border-color:rgba(139,92,246,0.3); background:var(--surface2); }
+.ch-icon { font-size: 26px; margin-bottom: 10px; }
+.ch-name { font-size:13px;font-weight:700;color:var(--white);margin-bottom:4px; }
+.ch-desc { font-size:11px;color:var(--muted);line-height:1.5; }
+
+/* ── PRICING ── */
+.pricing-section {
+  margin-top: 60px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.65s forwards;
+}
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.price-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 28px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.price-card.featured {
+  border-color: rgba(139,92,246,0.4);
+  background: linear-gradient(160deg, rgba(109,40,217,0.15), var(--surface));
+}
+.price-card.featured::before {
+  content: 'BEST VALUE';
+  position: absolute; top: 14px; right: -22px;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  color: white; font-size: 8px; font-weight: 800; letter-spacing: 1px;
+  padding: 3px 28px;
+  transform: rotate(35deg);
+}
+.price-card:hover { transform:translateY(-5px); }
+.price-period-label { font-size:11px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:12px; }
+.price-amount {
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size: 36px; font-weight: 800;
+  background: linear-gradient(135deg, #a78bfa, #ec4899);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1; margin-bottom: 4px;
+}
+.price-unit { font-size:11px;color:var(--muted);margin-bottom:16px; }
+.price-cta {
+  display: block;
+  padding: 10px;
+  background: linear-gradient(135deg, var(--purple-d), var(--violet));
+  border-radius: 10px;
+  color: white; font-size:12px; font-weight:700;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.price-cta:hover { opacity:0.85; }
+.price-card:not(.featured) .price-cta {
+  background: transparent;
+  border: 1px solid rgba(139,92,246,0.3);
+  color: var(--purple-b);
+}
+
+/* ── CTA ── */
+.cta-section {
+  margin-top: 60px;
+  background: linear-gradient(135deg, rgba(109,40,217,0.2), rgba(139,92,246,0.1), rgba(236,72,153,0.1));
+  border: 1px solid rgba(139,92,246,0.25);
+  border-radius: 24px;
+  padding: 52px 44px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  animation: rise 0.9s ease 0.75s forwards;
+}
+.cta-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(139,92,246,0.1) 0%, transparent 60%);
+  pointer-events: none;
+}
+.cta-tagline {
+  font-size: 12px; font-weight: 700; letter-spacing: 3px;
+  color: var(--purple-b); text-transform: uppercase;
+  margin-bottom: 14px; display: block;
+}
+.cta-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+.cta-desc { font-size:15px;color:var(--muted);max-width:500px;margin:0 auto 30px;line-height:1.7; }
+.cta-btns { display:flex;justify-content:center;gap:12px;flex-wrap:wrap; }
+.btn-main {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--purple-d), var(--pink));
+  color: white; border-radius: 12px;
+  font-size: 14px; font-weight: 700; letter-spacing: 0.3px;
+  text-decoration: none;
+  box-shadow: 0 8px 32px rgba(139,92,246,0.35);
+  transition: all 0.2s;
+}
+.btn-main:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(139,92,246,0.45); }
+.btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 28px;
+  border: 1px solid rgba(139,92,246,0.3);
+  color: var(--purple-b); border-radius: 12px;
+  font-size: 14px; font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.btn-ghost:hover { border-color:rgba(139,92,246,0.5); background:rgba(139,92,246,0.06); }
+
+/* ── TECH ── */
+.tech-row {
+  display:flex;justify-content:center;gap:8px;flex-wrap:wrap;
+  margin-top:48px;padding-top:36px;
+  border-top:1px solid var(--border);
+  opacity:0;
+  animation:rise 0.9s ease 0.9s forwards;
+}
+.tpill {
+  padding:5px 14px;
+  border:1px solid var(--border);
+  border-radius:20px;
+  font-size:11px;font-weight:500;
+  color:var(--muted);
+  background:var(--surface);
+  transition:all 0.2s;
+}
+.tpill:hover { border-color:rgba(139,92,246,0.3);color:var(--purple-b); }
+
+@keyframes rise { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── IMAGE GALLERY CAROUSEL ─── */
+.gallery-section {
+  margin-top: 64px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.35s forwards;
+  position: relative;
+}
+.gallery-title {
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 24px;
+  text-align: center;
+}
+.gallery-wrap {
+  position: relative;
+  padding: 0 48px;
+}
+.gallery-grid {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 8px 0 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139,92,246,0.4) var(--surface);
+}
+.gallery-grid::-webkit-scrollbar { height: 8px; }
+.gallery-grid::-webkit-scrollbar-track { background: var(--surface); border-radius: 4px; }
+.gallery-grid::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.4); border-radius: 4px; }
+.gallery-item {
+  flex: 0 0 auto;
+  width: 220px;
+  scroll-snap-align: start;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  aspect-ratio: 9 / 16;
+  max-height: 380px;
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--purple-b);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: all 0.2s;
+  user-select: none;
+}
+.gallery-btn:hover {
+  border-color: var(--purple-b);
+  background: var(--purple-g);
+}
+.gallery-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.gallery-btn.prev { left: 0; }
+.gallery-btn.next { right: 0; }
+.gallery-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.gallery-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.gallery-dot.active {
+  background: var(--purple-b);
+  border-color: var(--purple-b);
+  transform: scale(1.2);
+}
+
+@media (max-width:860px) {
+  .hero { grid-template-columns:1fr; gap:40px; padding:48px 0 36px; }
+  .phones-area { display:none; }
+  .gallery-wrap { padding: 0 40px; }
+  .gallery-item { width: 180px; max-height: 320px; }
+  .gallery-btn { width: 36px; height: 36px; font-size: 16px; }
+  .feat-grid { grid-template-columns:1fr 1fr; }
+  .channels-grid { grid-template-columns:1fr 1fr; }
+}
+@media (max-width:560px) {
+  .gallery-wrap { padding: 0 36px; }
+  .gallery-item { width: 160px; max-height: 280px; }
+  .feat-grid { grid-template-columns:1fr; }
+  .pricing-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">
+        <div class="ey-dot"></div>
+        <div class="ey-text">iOS App · AI Mentor · Education</div>
+      </div>
+      <div class="hero-title">ed<span class="grad">wai</span></div>
+      <div class="hero-tagline">Your 24/7 AI Mentor for Entrepreneurship</div>
+      <p class="hero-desc">
+        An AI-based mentoring app designed for micro entrepreneurs. edwai accompanies you throughout your journey — answering questions, creating business plans, guiding marketing strategy and financial planning, all day and all night.
+      </p>
+      <div class="quote-box">
+        <div class="quote-text">"edwai addresses you as a 'walking human' — because it knows the path to your dream will appear as you walk, and will never leave you alone on this path."</div>
+      </div>
+      <div class="hero-tags">
+        <span class="htag ht-p">Flutter</span>
+        <span class="htag ht-pk">GPT-4</span>
+        <span class="htag ht-v">iOS · macOS</span>
+        <span class="htag ht-p">In-App Purchases</span>
+        <span class="htag ht-pk">EN · TR</span>
+        <span class="htag ht-v">GoodForYou</span>
+      </div>
+    </div>
+
+    <!-- Phones -->
+    <div class="phones-area">
+
+      <!-- Back: Features screen -->
+      <div class="pw back">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="scr">
+            <div class="s-features">
+              <div class="feat-header">
+                <div class="feat-welcome">What I can do</div>
+                <div class="s-logo" style="font-size:12px">edwai</div>
+              </div>
+
+              <div class="feat-hero">
+                <div class="feat-hero-title">Your AI Mentor is Ready</div>
+                <div class="feat-hero-sub">Superhuman intelligence, always by your side</div>
+              </div>
+
+              <div class="feat-list">
+                <div class="feat-item">
+                  <div class="feat-item-icon">💡</div>
+                  <div class="feat-item-text">Evaluate your business idea & market</div>
+                </div>
+                <div class="feat-item">
+                  <div class="feat-item-icon">📋</div>
+                  <div class="feat-item-text">Create your business plan & strategy</div>
+                </div>
+                <div class="feat-item">
+                  <div class="feat-item-icon">📣</div>
+                  <div class="feat-item-text">Marketing & brand management</div>
+                </div>
+                <div class="feat-item">
+                  <div class="feat-item-icon">💰</div>
+                  <div class="feat-item-text">Cost & financial planning</div>
+                </div>
+              </div>
+
+              <div class="pricing-badge">
+                <div>
+                  <div class="price-label">Premium</div>
+                  <div class="price-value">$12.99</div>
+                  <div class="price-period">/ month</div>
+                </div>
+                <div class="price-btn">Subscribe →</div>
+              </div>
+            </div>
+          </div>
+          <div class="hbar"><div class="hpill"></div></div>
+        </div>
+      </div>
+
+      <!-- Front: Chat screen -->
+      <div class="pw front">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="scr">
+            <div class="s-chat">
+              <div class="s-nav">
+                <div class="s-logo">edwai</div>
+              </div>
+
+              <div class="avatar-section">
+                <div class="avatar-ring">
+                  <div class="avatar-face">🧠</div>
+                </div>
+                <div class="avatar-greeting">Hello, I am edwai!</div>
+                <div class="avatar-sub">Your AI mentor, available 24/7</div>
+              </div>
+
+              <div class="chat-area">
+                <div class="bubble bot">Hi! I'm ready to guide your entrepreneurial journey. What's on your mind today?</div>
+                <div class="bubble user">How do I validate my business idea?</div>
+                <div class="bubble bot">Great question! Start with 3 steps: Talk to 10 potential customers, build a simple landing page to measure interest, then set a small paid test. Want me to walk you through each?</div>
+              </div>
+
+              <div class="input-bar">
+                <div class="input-ph">Ask me anything...</div>
+                <div class="input-send">→</div>
+              </div>
+            </div>
+          </div>
+          <div class="hbar"><div class="hpill"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- IMAGE GALLERY CAROUSEL -->
+  <div class="gallery-section">
+    <h2 class="gallery-title">App screens</h2>
+    <div class="gallery-wrap">
+      <button type="button" class="gallery-btn prev" id="galleryPrev" aria-label="Previous">‹</button>
+      <div class="gallery-grid" id="galleryTrack">
+        <div class="gallery-item"><img src="assets/edwai%201.jpeg" alt="Edwai app 1" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/edwai%202.jpeg" alt="Edwai app 2" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/edwai%203.jpeg" alt="Edwai app 3" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/edwai%204.jpeg" alt="Edwai app 4" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/edwai%205.jpeg" alt="Edwai app 5" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/edwai%206.jpeg" alt="Edwai app 6" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/edwai%207.jpeg" alt="Edwai app 7" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/edwai%208.jpeg" alt="Edwai app 8" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/edwai%209.jpeg" alt="Edwai app 9" loading="lazy" /></div>
+      </div>
+      <button type="button" class="gallery-btn next" id="galleryNext" aria-label="Next">›</button>
+    </div>
+
+  </div>
+
+  <!-- FEATURES -->
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-title">What edwai Can Do</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="feat-grid">
+      <div class="fg-card">
+        <div class="fg-icon fgi-1">💡</div>
+        <div class="fg-name">Business Idea Evaluation</div>
+        <div class="fg-desc">Analyse your business idea with market insight, competitive research and viability scoring.</div>
+      </div>
+      <div class="fg-card">
+        <div class="fg-icon fgi-2">📋</div>
+        <div class="fg-name">Business Plan Builder</div>
+        <div class="fg-desc">Create a complete business plan and go-to-market strategy step by step, guided by your AI mentor.</div>
+      </div>
+      <div class="fg-card">
+        <div class="fg-icon fgi-3">📣</div>
+        <div class="fg-name">Marketing & Branding</div>
+        <div class="fg-desc">Learn effective marketing tactics and brand management tailored to your industry and budget.</div>
+      </div>
+      <div class="fg-card">
+        <div class="fg-icon fgi-4">💰</div>
+        <div class="fg-name">Financial Planning</div>
+        <div class="fg-desc">Cost calculations, revenue forecasting and financial planning simplified for non-finance founders.</div>
+      </div>
+      <div class="fg-card">
+        <div class="fg-icon fgi-5">⚖️</div>
+        <div class="fg-name">Legal & Resource Guide</div>
+        <div class="fg-desc">Navigate legal requirements, permits and resource management with expert-level guidance.</div>
+      </div>
+      <div class="fg-card">
+        <div class="fg-icon fgi-6">🌍</div>
+        <div class="fg-name">Bilingual Support</div>
+        <div class="fg-desc">Full English and Turkish language support — reach your mentor in your own language, any time.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHANNELS -->
+  <div class="channels-section">
+    <div class="sec-head">
+      <div class="sec-title">Reach Me Anywhere</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="channels-grid">
+      <div class="ch-card">
+        <div class="ch-icon">📱</div>
+        <div class="ch-name">iOS App</div>
+        <div class="ch-desc">Available on App Store — iPhone, Mac (M1)</div>
+      </div>
+      <div class="ch-card">
+        <div class="ch-icon">💬</div>
+        <div class="ch-name">Messenger</div>
+        <div class="ch-desc">Chat directly via Facebook Messenger, on the go</div>
+      </div>
+      <div class="ch-card">
+        <div class="ch-icon">📞</div>
+        <div class="ch-name">WhatsApp</div>
+        <div class="ch-desc">Send a message anytime via WhatsApp</div>
+      </div>
+      <div class="ch-card">
+        <div class="ch-icon">🌐</div>
+        <div class="ch-name">Web App</div>
+        <div class="ch-desc">Access edwai from any browser at heyedwai.com</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="pricing-section">
+    <div class="sec-head">
+      <div class="sec-title">Pricing</div>
+      <div class="sec-line"></div>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-period-label">Monthly</div>
+        <div class="price-amount">$12.99</div>
+        <div class="price-unit">per month</div>
+        <a href="https://apps.apple.com/cz/app/edwai/id6475994835" target="_blank" class="price-cta">Get Started</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-period-label">Annual</div>
+        <div class="price-amount">$95.99</div>
+        <div class="price-unit">per year · save 38%</div>
+        <a href="https://apps.apple.com/cz/app/edwai/id6475994835" target="_blank" class="price-cta">Get Started</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <span class="cta-tagline">✦ Available on App Store ✦</span>
+    <div class="cta-title">Start Your<br>Entrepreneurial Journey</div>
+    <p class="cta-desc">Download edwai to make a strong start to your entrepreneurial adventure. Let's realise your dream together.</p>
+    <div class="cta-btns">
+      <a href="https://apps.apple.com/cz/app/edwai/id6475994835" target="_blank" class="btn-main">🍎 Download on App Store</a>
+      <a href="https://www.heyedwai.com/en/" target="_blank" class="btn-ghost">🌐 Visit Website →</a>
+    </div>
+  </div>
+
+  <!-- TECH -->
+  <div class="tech-row">
+    <span class="tpill">Flutter</span>
+    <span class="tpill">GPT-4</span>
+    <span class="tpill">iOS 12+</span>
+    <span class="tpill">macOS M1</span>
+    <span class="tpill">In-App Purchases</span>
+    <span class="tpill">English & Turkish</span>
+    <span class="tpill">GoodForYou Inc.</span>
+    <span class="tpill">v2.2.7</span>
+    <span class="tpill">Zero Data Collection</span>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    var track = document.getElementById('galleryTrack');
+    var prevBtn = document.getElementById('galleryPrev');
+    var nextBtn = document.getElementById('galleryNext');
+    var dotsEl = document.getElementById('galleryDots');
+    if (!track || !prevBtn || !nextBtn) return;
+    var items = track.querySelectorAll('.gallery-item');
+    var count = items.length;
+    function scrollToIndex(i) {
+      var left = items[i].offsetLeft;
+      track.scrollTo({ left: left, behavior: 'smooth' });
+    }
+    function updateButtons() {
+      var scrollLeft = track.scrollLeft;
+      var maxScroll = track.scrollWidth - track.clientWidth;
+      prevBtn.disabled = scrollLeft <= 2;
+      nextBtn.disabled = maxScroll <= 2 || scrollLeft >= maxScroll - 2;
+    }
+    function updateDots() {
+      var scrollLeft = track.scrollLeft;
+      var idx = 0;
+      for (var j = 0; j < items.length; j++) {
+        if (items[j].offsetLeft + items[j].offsetWidth / 2 <= scrollLeft + track.clientWidth / 2) idx = j;
+      }
+      dotsEl.querySelectorAll('.gallery-dot').forEach(function(d, i) {
+        d.classList.toggle('active', i === idx);
+      });
+    }
+    prevBtn.addEventListener('click', function() {
+      var scrollLeft = track.scrollLeft;
+      var target = 0;
+      for (var i = items.length - 1; i >= 0; i--) {
+        if (items[i].offsetLeft < scrollLeft - 10) { target = i; break; }
+      }
+      scrollToIndex(target);
+    });
+    nextBtn.addEventListener('click', function() {
+      var scrollLeft = track.scrollLeft;
+      var target = items.length - 1;
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].offsetLeft > scrollLeft + track.clientWidth - items[i].offsetWidth - 10) { target = i; break; }
+      }
+      scrollToIndex(target);
+    });
+    track.addEventListener('scroll', function() { updateButtons(); updateDots(); });
+    for (var i = 0; i < count; i++) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+      (function(idx) { dot.addEventListener('click', function() { scrollToIndex(idx); }); })(i);
+      dotsEl.appendChild(dot);
+    }
+    updateButtons();
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leave No Trace – Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #050a14;
+  --surface:  #0b1220;
+  --surface2: #101a2a;
+  --blue:     #60a5fa;
+  --blue-mid: #3b82f6;
+  --blue-dim: #1e40af;
+  --blue-glow: rgba(59,130,246,0.15);
+  --earth:    #7c9eb8;
+  --earth-dim: rgba(124,158,184,0.2);
+  --white:    #f0f4ff;
+  --muted:    #64748b;
+  --text:     #c8d4e8;
+  --border:   rgba(59,130,246,0.12);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Space Grotesk', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Organic background */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -5%, rgba(59,130,246,0.1) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 5%  70%, rgba(96,165,250,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 50% at 95% 80%, rgba(124,158,184,0.08) 0%, transparent 50%);
+}
+
+/* Leaves / particles */
+.particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.leaf {
+  position: absolute;
+  width: var(--s, 8px); height: var(--s, 8px);
+  background: rgba(59,130,246,0.08);
+  border-radius: 50% 0 50% 0;
+  animation: drift var(--d,12s) ease-in-out var(--dl,0s) infinite;
+}
+@keyframes drift {
+  0%   { transform: translateY(0)   rotate(0deg)   scale(1); opacity:0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.5; }
+  100% { transform: translateY(-120px) rotate(180deg) scale(0.6); opacity:0; }
+}
+
+.page { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: 0 24px 100px; }
+
+/* ── HERO ─────────────────────────────── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  padding: 72px 0 56px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.1s forwards;
+}
+
+.hero-left {}
+
+.app-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(59,130,246,0.25);
+  background: var(--blue-glow);
+  border-radius: 20px;
+  padding: 6px 14px;
+  margin-bottom: 22px;
+}
+.badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--blue); animation: blink 2s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.badge-text { font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--blue); text-transform: uppercase; }
+
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(40px, 5.5vw, 72px);
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.0;
+  margin-bottom: 6px;
+  letter-spacing: -1px;
+}
+.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--blue);
+}
+
+.hero-tagline {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(15px, 1.8vw, 20px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 22px;
+  letter-spacing: 0.3px;
+}
+
+.hero-desc {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--muted);
+  max-width: 440px;
+  margin-bottom: 32px;
+  border-left: 2px solid rgba(59,130,246,0.3);
+  padding-left: 16px;
+}
+
+.hero-meta { display: flex; gap: 28px; flex-wrap: wrap; }
+.meta-item { }
+.meta-label { font-size: 10px; font-weight: 600; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 3px; }
+.meta-value { font-size: 14px; font-weight: 600; color: var(--white); }
+
+/* ── PHONE MOCKUP ─── */
+.hero-right {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.phone-wrap {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center;
+}
+.phone-wrap.back {
+  transform: translateX(26px) rotate(6deg) scale(0.85);
+  z-index: 1;
+  margin-bottom: 24px;
+}
+.phone-wrap.front {
+  z-index: 2;
+  animation: floatPhone 5s ease-in-out infinite;
+}
+@keyframes floatPhone { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+.phone {
+  width: 200px;
+  background: #0f172a;
+  border-radius: 42px;
+  border: 2px solid rgba(59,130,246,0.2);
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.5),
+    0 30px 80px rgba(0,0,0,0.65),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.phone-wrap.front .phone {
+  width: 218px;
+  border-color: rgba(59,130,246,0.35);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.5),
+    0 40px 100px rgba(0,0,0,0.7),
+    0 0 60px rgba(59,130,246,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.notch { width: 80px; height: 20px; background: #0f172a; border-radius: 0 0 12px 12px; margin: 0 auto; }
+.scr { overflow: hidden; position: relative; }
+.home-row { height: 26px; display:flex; align-items:center; justify-content:center; }
+.home-pill { width: 70px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+/* ── SCREEN A: CARBON CALCULATOR ─── */
+.s-calc {
+  background: linear-gradient(170deg, #071018 0%, #0d1525 50%, #071018 100%);
+  min-height: 380px;
+  display: flex; flex-direction: column;
+}
+.s-calc-nav {
+  padding: 10px 14px 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.s-calc-logo {
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue);
+  letter-spacing: 1px;
+}
+
+.hero-graphic {
+  margin: 6px auto;
+  width: 90px; height: 90px;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+/* Earth circle */
+.earth-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%,
+    #1e3a5f 0%, #1e293b 40%, #0f172a 100%);
+  box-shadow: 0 0 20px rgba(59,130,246,0.25), inset 0 0 20px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
+}
+.earth-continent {
+  position: absolute;
+  background: rgba(59,130,246,0.3);
+  border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+}
+.ec1 { width: 30px; height: 24px; top: 15px; left: 12px; transform: rotate(-20deg); }
+.ec2 { width: 20px; height: 30px; top: 30px; left: 44px; transform: rotate(15deg); border-radius: 30% 70% 50% 50% / 60% 40% 70% 30%; }
+.ec3 { width: 14px; height: 12px; bottom: 10px; left: 20px; }
+
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(59,130,246,0.2);
+  animation: spin var(--sp,8s) linear infinite;
+}
+.or1 { width: 100px; height: 100px; }
+.or2 { width: 120px; height: 60px; border-color: rgba(124,158,184,0.2); --sp: 12s; }
+@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+.co2-badge {
+  position: absolute;
+  bottom: -4px; right: -6px;
+  background: linear-gradient(135deg, #1e40af, #1e3a8a);
+  border: 1px solid rgba(59,130,246,0.4);
+  border-radius: 10px;
+  padding: 3px 6px;
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: 0.5px;
+}
+
+.calc-title {
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  color: var(--white);
+  text-align: center;
+  padding: 0 14px;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+/* Progress ruler */
+.ruler {
+  margin: 0 14px 10px;
+  background: rgba(59,130,246,0.06);
+  border: 1px solid rgba(59,130,246,0.15);
+  border-radius: 10px;
+  padding: 10px;
+}
+.ruler-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 6px;
+}
+.ruler-label { font-size: 8px; font-weight: 600; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+.ruler-val { font-size: 10px; font-weight: 700; color: var(--blue); }
+.ruler-bar {
+  height: 6px;
+  background: rgba(59,130,246,0.12);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.ruler-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--blue-mid), var(--blue));
+}
+.ruler-ticks {
+  display: flex; justify-content: space-between;
+  font-size: 7px;
+  color: var(--muted);
+}
+
+/* Category cards */
+.cat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  padding: 0 14px 10px;
+}
+.cat-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(59,130,246,0.15);
+  border-radius: 8px;
+  padding: 7px 8px;
+  display: flex; align-items: center; gap: 5px;
+}
+.cat-icon { font-size: 12px; }
+.cat-info {}
+.cat-name { font-size: 7.5px; font-weight: 600; color: var(--white); }
+.cat-val  { font-size: 7px; color: var(--blue); }
+
+/* ── SCREEN B: CHALLENGE / STEPS ─── */
+.s-challenge {
+  background: linear-gradient(170deg, #06100a 0%, #0d1f12 100%);
+  min-height: 360px;
+  display: flex; flex-direction: column;
+}
+
+.challenge-header {
+  padding: 10px 14px 6px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.challenge-hero-area {
+  margin: 4px 14px;
+  background: linear-gradient(135deg, #0f172a, #1e3a5f);
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid rgba(59,130,246,0.2);
+  display: flex; flex-direction: column; align-items: center;
+}
+.ch-title {
+  font-family: 'Fraunces', serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 6px;
+}
+.ch-score {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--blue);
+  line-height: 1;
+}
+.ch-unit { font-size: 9px; color: var(--muted); }
+
+.steps-list {
+  padding: 6px 14px 8px;
+  display: flex; flex-direction: column; gap: 5px;
+}
+.step-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(59,130,246,0.12);
+}
+.step-check {
+  width: 14px; height: 14px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; flex-shrink: 0;
+}
+.step-check.done { background: rgba(59,130,246,0.25); color: var(--blue); }
+.step-check.todo { border: 1.5px solid rgba(59,130,246,0.3); }
+.step-text { font-size: 8px; color: var(--text); }
+.step-co2 { margin-left: auto; font-size: 7.5px; color: var(--blue); font-weight: 600; flex-shrink: 0; }
+
+/* ── IMPACT SECTION ─── */
+.impact-section {
+  margin-top: 80px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.4s forwards;
+}
+
+.section-head {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 28px;
+}
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--white);
+  white-space: nowrap;
+}
+.section-line { flex: 1; height: 1px; background: var(--border); }
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.impact-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px 20px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.impact-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59,130,246,0.35), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.impact-card:hover { transform: translateY(-5px); border-color: rgba(59,130,246,0.25); }
+.impact-card:hover::after { opacity: 1; }
+
+.impact-icon { font-size: 26px; margin-bottom: 12px; }
+.impact-stat {
+  font-family: 'Fraunces', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--blue);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.impact-stat-label { font-size: 11px; color: var(--muted); margin-bottom: 12px; font-weight: 500; }
+.impact-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ── HOW IT WORKS ─── */
+.how-section {
+  margin-top: 64px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.55s forwards;
+}
+
+.steps-horizontal {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+.steps-horizontal::before {
+  content: '';
+  position: absolute;
+  top: 28px; left: calc(12.5% + 14px); right: calc(12.5% + 14px);
+  height: 1px;
+  background: linear-gradient(90deg, rgba(59,130,246,0.45), rgba(59,130,246,0.12));
+}
+
+.how-step {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  padding: 0 12px;
+  position: relative;
+}
+.how-num {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid rgba(59,130,246,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  margin-bottom: 14px;
+  position: relative; z-index: 1;
+  transition: all 0.3s;
+}
+.how-step:hover .how-num {
+  border-color: var(--blue);
+  background: rgba(59,130,246,0.1);
+  transform: scale(1.1);
+}
+.how-step-title {
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.how-step-desc { font-size: 12px; color: var(--muted); line-height: 1.55; }
+
+/* ── APP STORE CTA ─── */
+.cta-section {
+  margin-top: 64px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 48px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.7s forwards;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 0% 50%, rgba(59,130,246,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.cta-left {}
+.cta-title {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  font-style: italic;
+}
+.cta-sub { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 400px; }
+
+.cta-buttons { display: flex; gap: 12px; align-items: center; flex-shrink: 0; }
+.btn-appstore {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--white);
+  color: #06100a;
+  border-radius: 12px;
+  padding: 12px 22px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.btn-appstore:hover { opacity: 0.88; }
+.btn-appstore-icon { font-size: 22px; }
+.btn-appstore-text {}
+.btn-appstore-label { font-size: 10px; font-weight: 500; color: #444; }
+.btn-appstore-store { font-size: 14px; font-weight: 700; color: #000; }
+
+.btn-ghost {
+  padding: 12px 22px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-ghost:hover { border-color: rgba(59,130,246,0.35); color: var(--blue); }
+
+/* ── TECH ROW ─── */
+.tech-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 48px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  animation: rise 0.9s ease 0.85s forwards;
+}
+.tpill {
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  background: var(--surface);
+  transition: all 0.2s;
+}
+.tpill:hover { border-color: rgba(59,130,246,0.3); color: var(--blue); }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── IMAGE GALLERY CAROUSEL ─── */
+.gallery-section {
+  margin-top: 64px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.35s forwards;
+  position: relative;
+}
+.gallery-title {
+  font-family: 'Fraunces', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 24px;
+  text-align: center;
+}
+.gallery-wrap {
+  position: relative;
+  padding: 0 48px;
+}
+.gallery-grid {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 8px 0 16px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(59,130,246,0.4) var(--surface);
+}
+.gallery-grid::-webkit-scrollbar { height: 8px; }
+.gallery-grid::-webkit-scrollbar-track { background: var(--surface); border-radius: 4px; }
+.gallery-grid::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.4); border-radius: 4px; }
+.gallery-item {
+  flex: 0 0 auto;
+  width: 220px;
+  scroll-snap-align: start;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  aspect-ratio: 9 / 16;
+  max-height: 380px;
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--blue);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: all 0.2s;
+  user-select: none;
+}
+.gallery-btn:hover {
+  border-color: var(--blue);
+  background: rgba(59,130,246,0.12);
+}
+.gallery-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.gallery-btn.prev { left: 0; }
+.gallery-btn.next { right: 0; }
+.gallery-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.gallery-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.gallery-dot.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  transform: scale(1.2);
+}
+
+@media (max-width: 860px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; padding: 48px 0 36px; }
+  .hero-right { display: none; }
+  .gallery-wrap { padding: 0 40px; }
+  .gallery-item { width: 180px; max-height: 320px; }
+  .gallery-btn { width: 36px; height: 36px; font-size: 16px; }
+  .impact-grid { grid-template-columns: 1fr 1fr; }
+  .steps-horizontal { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .steps-horizontal::before { display: none; }
+  .cta-section { flex-direction: column; text-align: center; }
+}
+@media (max-width: 560px) {
+  .gallery-wrap { padding: 0 36px; }
+  .gallery-item { width: 160px; max-height: 280px; }
+  .impact-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="app-badge">
+        <div class="badge-dot"></div>
+        <div class="badge-text">App Store · Lifestyle · Free</div>
+      </div>
+      <div class="hero-title">Leave<br><em>No Trace</em></div>
+      <div class="hero-tagline">Small steps, big impact</div>
+      <p class="hero-desc">
+        An iOS app that guides individual change into cultural change. Calculate your carbon footprint, review your daily habits, and take action in the fight against the climate crisis.
+      </p>
+      <div class="hero-meta">
+        <div class="meta-item">
+          <div class="meta-label">Platform</div>
+          <div class="meta-value">iPhone · iPad · Mac</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Category</div>
+          <div class="meta-value">Lifestyle</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Version</div>
+          <div class="meta-value">1.6.6</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Developer</div>
+          <div class="meta-value">Cmos Teknoloji</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <!-- Back phone -->
+      <div class="phone-wrap back">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="scr">
+            <div class="s-challenge">
+              <div class="challenge-header">
+                <div class="s-calc-logo">Leave No Trace</div>
+              </div>
+
+              <div class="challenge-hero-area">
+                <div class="ch-title">This week's savings</div>
+                <div class="ch-score">–4.2</div>
+                <div class="ch-unit">kg CO₂ reduced</div>
+              </div>
+
+              <div class="steps-list">
+                <div class="step-item">
+                  <div class="step-check done">✓</div>
+                  <div class="step-text">Used public transport</div>
+                  <div class="step-co2">–0.8kg</div>
+                </div>
+                <div class="step-item">
+                  <div class="step-check done">✓</div>
+                  <div class="step-text">Reduced meat consumption</div>
+                  <div class="step-co2">–1.5kg</div>
+                </div>
+                <div class="step-item">
+                  <div class="step-check done">✓</div>
+                  <div class="step-text">Saved energy</div>
+                  <div class="step-co2">–1.2kg</div>
+                </div>
+                <div class="step-item">
+                  <div class="step-check todo"></div>
+                  <div class="step-text">Walking distance</div>
+                  <div class="step-co2">–0.7kg</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="home-row"><div class="home-pill"></div></div>
+        </div>
+      </div>
+
+      <!-- Front phone -->
+      <div class="phone-wrap front">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="scr">
+            <div class="s-calc">
+              <div class="s-calc-nav">
+                <div class="s-calc-logo">Leave No Trace</div>
+              </div>
+
+              <!-- Earth graphic -->
+              <div style="display:flex;justify-content:center;margin:6px 0;">
+                <div class="hero-graphic">
+                  <div class="orbit-ring or1"></div>
+                  <div class="orbit-ring or2"></div>
+                  <div class="earth-circle">
+                    <div class="earth-continent ec1"></div>
+                    <div class="earth-continent ec2"></div>
+                    <div class="earth-continent ec3"></div>
+                  </div>
+                  <div class="co2-badge">CO₂</div>
+                </div>
+              </div>
+
+              <div class="calc-title">Calculate Your Carbon Footprint</div>
+
+              <!-- Ruler -->
+              <div class="ruler">
+                <div class="ruler-header">
+                  <div class="ruler-label">Monthly footprint</div>
+                  <div class="ruler-val">142 kg CO₂</div>
+                </div>
+                <div class="ruler-bar">
+                  <div class="ruler-fill" style="width:38%"></div>
+                </div>
+                <div class="ruler-ticks">
+                  <span>0</span><span>100</span><span>200</span><span>400+</span>
+                </div>
+              </div>
+
+              <!-- Categories -->
+              <div class="cat-grid">
+                <div class="cat-card">
+                  <div class="cat-icon">🚗</div>
+                  <div class="cat-info">
+                    <div class="cat-name">Transport</div>
+                    <div class="cat-val">68 kg</div>
+                  </div>
+                </div>
+                <div class="cat-card">
+                  <div class="cat-icon">🍽️</div>
+                  <div class="cat-info">
+                    <div class="cat-name">Food</div>
+                    <div class="cat-val">42 kg</div>
+                  </div>
+                </div>
+                <div class="cat-card">
+                  <div class="cat-icon">💡</div>
+                  <div class="cat-info">
+                    <div class="cat-name">Energy</div>
+                    <div class="cat-val">24 kg</div>
+                  </div>
+                </div>
+                <div class="cat-card">
+                  <div class="cat-icon">🛍️</div>
+                  <div class="cat-info">
+                    <div class="cat-name">Consumption</div>
+                    <div class="cat-val">8 kg</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="home-row"><div class="home-pill"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IMAGE GALLERY CAROUSEL -->
+  <div class="gallery-section">
+    <h2 class="gallery-title">App screens</h2>
+    <div class="gallery-wrap">
+      <button type="button" class="gallery-btn prev" id="galleryPrev" aria-label="Previous">‹</button>
+      <div class="gallery-grid" id="galleryTrack">
+        <div class="gallery-item"><img src="assets/yuvamdunya.jpeg" alt="Leave No Trace app 1" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/yuvamdunya%201.jpeg" alt="Leave No Trace app 2" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/yuvamdunya%202.jpeg" alt="Leave No Trace app 3" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/yuvamdunya%203.jpeg" alt="Leave No Trace app 4" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/yuvamdunya%204.jpeg" alt="Leave No Trace app 5" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/yuvamdunya%205.jpeg" alt="Leave No Trace app 6" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/yuvamdunya%206.jpeg" alt="Leave No Trace app 7" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/yuvamdunya%207.jpeg" alt="Leave No Trace app 8" loading="lazy" /></div>
+        <div class="gallery-item"><img src="assets/yuvamdunya%208.jpeg" alt="Leave No Trace app 9" loading="lazy" /></div>
+      </div>
+      <button type="button" class="gallery-btn next" id="galleryNext" aria-label="Next">›</button>
+    </div>
+    <div class="gallery-dots" id="galleryDots"></div>
+  </div>
+
+  <!-- IMPACT STATS -->
+  <div class="impact-section">
+    <div class="section-head">
+      <div class="section-title">Why It Matters</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-icon">🌍</div>
+        <div class="impact-stat">2°C</div>
+        <div class="impact-stat-label">Paris Agreement target</div>
+        <div class="impact-desc">The 2015 Paris Conference agreed to limit global warming to 2°C over 100 years.</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-icon">🔬</div>
+        <div class="impact-stat">%80</div>
+        <div class="impact-stat-label">Fossil-based energy</div>
+        <div class="impact-desc">Most of the world's energy still comes from fossil fuels. Individual steps make a difference.</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-icon">🌱</div>
+        <div class="impact-stat">Zero</div>
+        <div class="impact-stat-label">Data collection</div>
+        <div class="impact-desc">The app does not collect any personal data. Your privacy is respected — calculations stay on your device.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-section">
+    <div class="section-head">
+      <div class="section-title">How It Works</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="steps-horizontal">
+      <div class="how-step">
+        <div class="how-num">🧮</div>
+        <div class="how-step-title">Calculate</div>
+        <div class="how-step-desc">Enter transport, food, energy and consumption habits; see your monthly CO₂.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">📊</div>
+        <div class="how-step-title">Analyze</div>
+        <div class="how-step-desc">Assumptions and reference sources are explained transparently for each category.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">🎯</div>
+        <div class="how-step-title">Challenge</div>
+        <div class="how-step-desc">Weekly challenges help you build small habit changes and track your progress.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">🌿</div>
+        <div class="how-step-title">Leave No Trace</div>
+        <div class="how-step-desc">Individual change becomes cultural change — join the movement.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-left">
+      <div class="cta-title">Ready to get started?</div>
+      <p class="cta-sub">Download the app for free to take your first step in the fight against the climate crisis. Available on iPhone, iPad and Mac.</p>
+    </div>
+    <div class="cta-buttons">
+      <a href="https://apps.apple.com/us/app/i-z-b%C4%B1rakmayanlar/id1602682301" target="_blank" class="btn-appstore">
+        <div class="btn-appstore-icon">🍎</div>
+        <div class="btn-appstore-text">
+          <div class="btn-appstore-label">Download on the</div>
+          <div class="btn-appstore-store">App Store</div>
+        </div>
+      </a>
+      <a href="https://apps.apple.com/us/app/i-z-b%C4%B1rakmayanlar/id1602682301" target="_blank" class="btn-ghost">View on App Store →</a>
+    </div>
+  </div>
+
+  <!-- TECH PILLS -->
+  <div class="tech-row">
+    <span class="tpill">Swift · iOS 14+</span>
+    <span class="tpill">Carbon calculator</span>
+    <span class="tpill">Challenge system</span>
+    <span class="tpill">Notifications</span>
+    <span class="tpill">Corporate login</span>
+    <span class="tpill">iPad · Mac (M1)</span>
+    <span class="tpill">No data collection</span>
+  </div>
+
+</div>
+
+<script>
+  // Leaf particles
+  const p = document.getElementById('particles');
+  for (let i = 0; i < 18; i++) {
+    const el = document.createElement('div');
+    el.className = 'leaf';
+    const s = 6 + Math.random() * 14;
+    el.style.cssText = `
+      left:${Math.random()*100}%;
+      bottom:${Math.random()*60}%;
+      --s:${s}px;
+      --d:${10+Math.random()*10}s;
+      --dl:${Math.random()*8}s;
+      transform:rotate(${Math.random()*360}deg);
+    `;
+    p.appendChild(el);
+  }
+
+  // Gallery carousel
+  (function() {
+    var track = document.getElementById('galleryTrack');
+    var prevBtn = document.getElementById('galleryPrev');
+    var nextBtn = document.getElementById('galleryNext');
+    var dotsEl = document.getElementById('galleryDots');
+    if (!track || !prevBtn || !nextBtn) return;
+    var items = track.querySelectorAll('.gallery-item');
+    var count = items.length;
+    var itemWidth = 220 + 16;
+    var step = Math.max(1, Math.floor(track.clientWidth / itemWidth));
+    function scrollToIndex(i) {
+      var left = items[i].offsetLeft;
+      track.scrollTo({ left: left, behavior: 'smooth' });
+    }
+    function updateButtons() {
+      var scrollLeft = track.scrollLeft;
+      var maxScroll = track.scrollWidth - track.clientWidth;
+      prevBtn.disabled = scrollLeft <= 2;
+      nextBtn.disabled = maxScroll <= 2 || scrollLeft >= maxScroll - 2;
+    }
+    function updateDots() {
+      var scrollLeft = track.scrollLeft;
+      var idx = 0;
+      for (var j = 0; j < items.length; j++) {
+        if (items[j].offsetLeft + items[j].offsetWidth / 2 <= scrollLeft + track.clientWidth / 2) idx = j;
+      }
+      dotsEl.querySelectorAll('.gallery-dot').forEach(function(d, i) {
+        d.classList.toggle('active', i === idx);
+      });
+    }
+    prevBtn.addEventListener('click', function() {
+      var scrollLeft = track.scrollLeft;
+      var target = 0;
+      for (var i = items.length - 1; i >= 0; i--) {
+        if (items[i].offsetLeft < scrollLeft - 10) { target = i; break; }
+      }
+      scrollToIndex(target);
+    });
+    nextBtn.addEventListener('click', function() {
+      var scrollLeft = track.scrollLeft;
+      var target = items.length - 1;
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].offsetLeft > scrollLeft + track.clientWidth - items[i].offsetWidth - 10) { target = i; break; }
+      }
+      scrollToIndex(target);
+    });
+    track.addEventListener('scroll', function() { updateButtons(); updateDots(); });
+    for (var i = 0; i < count; i++) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+      (function(idx) { dot.addEventListener('click', function() { scrollToIndex(idx); }); })(i);
+      dotsEl.appendChild(dot);
+    }
+    updateButtons();
+  })();
+</script>
+
+</body>
+</html>

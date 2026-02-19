@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <circle cx="60" cy="60" r="54" fill="#1d428a" stroke="#c8102e" stroke-width="4"/>
+  <path d="M60 18 L60 102 M18 60 L102 60 M35 35 L85 85 M85 35 L35 85" stroke="#c8102e" stroke-width="3" stroke-linecap="round"/>
+  <path d="M60 18 A42 42 0 0 1 92 60 A42 42 0 0 1 60 102 A42 42 0 0 1 28 60 A42 42 0 0 1 60 18" fill="none" stroke="#c8102e" stroke-width="2.5"/>
+  <text x="60" y="72" font-family="Arial Black, sans-serif" font-size="28" font-weight="900" fill="white" text-anchor="middle">NBA</text>
+</svg>

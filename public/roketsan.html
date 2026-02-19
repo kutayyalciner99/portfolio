@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roketsan – Room & Meeting Reservation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #f4f7f4;
+  --surface:   #ffffff;
+  --surface2:  #eef3ee;
+  --green:     #2e7d32;
+  --green-mid: #388e3c;
+  --green-lt:  #66bb6a;
+  --green-dim: rgba(46,125,50,0.10);
+  --green-glow:rgba(46,125,50,0.07);
+  --green-dark:#1b5e20;
+  --accent:    #ff6f00;
+  --red:       #c62828;
+  --amber:     #f9a825;
+  --white:     #ffffff;
+  --muted:     #6b8068;
+  --text:      #1a2e1c;
+  --text-lt:   #3d5c40;
+  --border:    rgba(46,125,50,0.14);
+  --shadow:    0 4px 20px rgba(46,125,50,0.10);
+  --shadow-lg: 0 12px 40px rgba(46,125,50,0.15);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Arial', 'Inter', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(46,125,50,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 50% at 0% 100%, rgba(102,187,106,0.06) 0%, transparent 50%);
+}
+
+/* Subtle grid texture */
+body::after {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(46,125,50,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46,125,50,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.page { position: relative; z-index: 1; max-width: 1160px; margin: 0 auto; padding: 0 28px 100px; }
+
+/* ── HERO ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 64px;
+  align-items: center;
+  padding: 72px 0 56px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.1s forwards;
+}
+
+.app-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  border: 1.5px solid rgba(46,125,50,0.28);
+  background: var(--green-dim);
+  border-radius: 4px;
+  padding: 7px 16px;
+  margin-bottom: 24px;
+}
+.badge-square { width: 8px; height: 8px; background: var(--green); border-radius: 2px; animation: blink 2.5s ease-in-out infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.badge-text { font-size: 10px; font-weight: 700; letter-spacing: 2.5px; color: var(--green); text-transform: uppercase; }
+
+.hero-eyebrow {
+  font-size: 12px; font-weight: 700; letter-spacing: 2px;
+  color: var(--green-lt); text-transform: uppercase; margin-bottom: 10px;
+}
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(34px, 4.5vw, 60px);
+  color: var(--text);
+  line-height: 1.05;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--green);
+}
+
+.hero-tagline {
+  font-size: clamp(13px, 1.5vw, 16px);
+  font-weight: 500;
+  color: var(--muted);
+  margin-bottom: 22px;
+  letter-spacing: 0.2px;
+}
+
+.hero-desc {
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--muted);
+  max-width: 440px;
+  margin-bottom: 32px;
+  padding-left: 16px;
+  border-left: 3px solid var(--green-lt);
+}
+
+.hero-meta {
+  display: flex; gap: 0;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: var(--shadow);
+}
+.meta-item { padding: 14px 20px; border-right: 1px solid var(--border); flex: 1; min-width: 90px; }
+.meta-item:last-child { border-right: none; }
+.meta-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; }
+.meta-value { font-size: 12px; font-weight: 700; color: var(--text); }
+
+/* ── TABLET MOCKUP (Landscape) ── */
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}
+
+.tablet-wrap {
+  position: relative;
+  width: 100%;
+  animation: floatTablet 6s ease-in-out infinite;
+}
+@keyframes floatTablet { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+.tablet {
+  width: 100%;
+  background: #101c11;
+  border-radius: 20px;
+  border: 3px solid #1a2e1c;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.4),
+    0 30px 80px rgba(0,0,0,0.35),
+    0 0 40px rgba(46,125,50,0.12);
+  aspect-ratio: 16/10;
+  display: flex; flex-direction: column;
+}
+
+/* HOME SCREEN (landscape) */
+.t-topbar {
+  height: 36px;
+  background: var(--green-dark);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px;
+  flex-shrink: 0;
+}
+.t-logo {
+  font-weight: 700; font-size: 11px; color: white; letter-spacing: 1px; text-transform: uppercase;
+  display: flex; align-items: center; gap: 6px;
+}
+.t-logo-dot { width: 8px; height: 8px; background: var(--green-lt); border-radius: 50%; }
+.t-user { font-size: 9px; color: rgba(255,255,255,0.7); display: flex; align-items: center; gap: 5px; }
+.t-user-badge { background: rgba(255,255,255,0.15); border-radius: 3px; padding: 2px 6px; font-size: 8px; }
+
+.t-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.t-sidebar {
+  width: 110px;
+  background: #1a2e1c;
+  flex-shrink: 0;
+  display: flex; flex-direction: column;
+  padding: 10px 0;
+}
+.t-nav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 8px 6px;
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+.t-nav-item.active { border-left-color: var(--green-lt); background: rgba(102,187,106,0.1); }
+.t-nav-icon { font-size: 13px; }
+.t-nav-label { font-size: 7px; font-weight: 600; color: rgba(255,255,255,0.6); text-align: center; }
+.t-nav-item.active .t-nav-label { color: var(--green-lt); }
+
+/* Main content */
+.t-main {
+  flex: 1;
+  background: #f4f7f4;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+.t-section-head {
+  background: var(--white);
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(46,125,50,0.1);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.t-section-title { font-size: 10px; font-weight: 700; color: var(--text); letter-spacing: 0.5px; }
+.t-section-badge {
+  font-size: 7.5px; font-weight: 700;
+  background: var(--green-dim); color: var(--green);
+  border-radius: 3px; padding: 2px 7px;
+}
+
+/* Room grid */
+.t-room-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 7px; padding: 8px;
+  flex: 1;
+}
+.t-room-card {
+  background: var(--white);
+  border-radius: 8px;
+  border: 1.5px solid rgba(46,125,50,0.1);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+.t-room-card-head {
+  height: 5px;
+}
+.t-room-card-head.green { background: var(--green); }
+.t-room-card-head.red { background: var(--red); }
+.t-room-card-head.amber { background: var(--amber); }
+.t-room-card-body { padding: 6px 8px; flex: 1; }
+.t-room-name { font-size: 8px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.t-room-cap { font-size: 7px; color: var(--muted); margin-bottom: 4px; }
+.t-room-status {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 7px; font-weight: 700;
+  padding: 2px 5px; border-radius: 3px;
+}
+.t-room-status.available { background: rgba(46,125,50,0.1); color: var(--green); }
+.t-room-status.busy { background: rgba(198,40,40,0.1); color: var(--red); }
+.t-room-status.soon { background: rgba(249,168,37,0.12); color: #e65100; }
+.t-status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+/* Bottombar */
+.t-bottombar {
+  height: 22px;
+  background: var(--green-dark);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 12px;
+  flex-shrink: 0;
+}
+.t-bottom-info { font-size: 7px; color: rgba(255,255,255,0.5); }
+
+/* Small tablet below hero showing reservation form */
+.tablet-small {
+  width: 85%;
+  background: #101c11;
+  border-radius: 16px;
+  border: 2.5px solid #1a2e1c;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.25);
+  aspect-ratio: 16/8;
+  display: flex; flex-direction: column;
+  opacity: 0.92;
+  transform: rotate(-1.5deg);
+}
+
+/* ── SECTIONS ── */
+.section {
+  margin-top: 72px;
+  opacity: 0;
+  animation: rise 0.9s ease var(--delay, 0.3s) forwards;
+}
+
+.section-head {
+  display: flex; align-items: center; gap: 18px;
+  margin-bottom: 32px;
+}
+.section-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 2px;
+  color: var(--green-lt); text-transform: uppercase;
+}
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  color: var(--text);
+  white-space: nowrap;
+}
+.section-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
+
+/* ── FLOW / SCREENS ── */
+.screens-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.screen-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+}
+.screen-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: rgba(46,125,50,0.25); }
+
+.screen-preview {
+  height: 130px;
+  background: #1a2e1c;
+  position: relative;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.sp-bar { height: 16px; background: var(--green-dark); display: flex; align-items: center; padding: 0 6px; gap: 4px; flex-shrink: 0; }
+.sp-bar-title { font-size: 6px; font-weight: 700; color: white; letter-spacing: 0.5px; text-transform: uppercase; }
+.sp-body { flex: 1; padding: 6px; display: flex; flex-direction: column; gap: 4px; }
+
+/* Login preview */
+.sp-login-form {
+  display: flex; flex-direction: column; gap: 4px;
+  align-items: center; justify-content: center;
+  flex: 1; padding: 8px;
+}
+.sp-field { width: 100%; height: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 3px; }
+.sp-btn { width: 70%; height: 11px; background: var(--green); border-radius: 3px; margin-top: 2px; }
+.sp-logo-big { font-size: 10px; font-weight: 700; color: white; text-align: center; margin-bottom: 4px; letter-spacing: 1px; }
+
+/* Room grid preview */
+.sp-rooms { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; flex: 1; }
+.sp-room { background: rgba(255,255,255,0.06); border-radius: 4px; border-top: 3px solid var(--green); }
+.sp-room.red { border-top-color: var(--red); }
+.sp-room.amber { border-top-color: var(--amber); }
+
+/* Reservation form preview */
+.sp-form { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; flex: 1; }
+.sp-frow { background: rgba(255,255,255,0.06); border-radius: 3px; height: 10px; }
+.sp-frow.full { grid-column: 1 / -1; }
+
+/* Reservation list preview */
+.sp-list { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.sp-list-item {
+  background: rgba(255,255,255,0.06); border-radius: 4px;
+  height: 16px; display: flex; align-items: center; padding: 0 5px; gap: 4px;
+}
+.sp-list-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.sp-list-line { flex: 1; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; }
+.sp-list-action { width: 14px; height: 8px; background: rgba(46,125,50,0.4); border-radius: 2px; }
+
+.screen-info { padding: 14px 16px; }
+.screen-num { font-size: 10px; font-weight: 700; color: var(--green-lt); letter-spacing: 1px; margin-bottom: 4px; }
+.screen-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 15px; color: var(--text); margin-bottom: 6px;
+}
+.screen-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+/* ── FEATURE GRID ── */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+.feature-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 20px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.feature-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--green);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s;
+}
+.feature-card:hover::before { transform: scaleX(1); }
+.feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: rgba(46,125,50,0.25); }
+.feature-icon { font-size: 26px; margin-bottom: 12px; }
+.feature-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 7px; }
+.feature-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+/* ── FORM FIELDS SHOWCASE ── */
+.form-showcase {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.form-showcase-head {
+  background: var(--green-dark);
+  padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.fsh-title { font-size: 13px; font-weight: 700; color: white; letter-spacing: 0.5px; }
+.fsh-badge { font-size: 10px; background: rgba(255,255,255,0.15); color: white; padding: 3px 10px; border-radius: 3px; }
+.form-showcase-body { padding: 20px; }
+.form-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+}
+.form-field {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.form-field.span2 { grid-column: span 2; }
+.form-field.span3 { grid-column: span 3; }
+.field-label { font-size: 10px; font-weight: 700; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; }
+.field-input {
+  height: 36px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  display: flex; align-items: center; padding: 0 10px;
+  font-size: 12px; color: var(--text-lt);
+  font-weight: 500;
+}
+.field-input.filled { border-color: rgba(46,125,50,0.3); background: rgba(46,125,50,0.04); }
+.field-input.required::after { content: ' *'; color: var(--red); font-size: 10px; }
+.field-actions {
+  display: flex; gap: 10px; justify-content: flex-end;
+  margin-top: 16px; padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.btn-primary {
+  padding: 9px 22px;
+  background: var(--green);
+  color: white; border: none; border-radius: 6px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary:hover { background: var(--green-dark); }
+.btn-secondary {
+  padding: 9px 22px;
+  background: transparent;
+  color: var(--muted); border: 1.5px solid var(--border); border-radius: 6px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-secondary:hover { border-color: var(--green-lt); color: var(--green); }
+
+/* ── RESERVATION TABLE ── */
+.res-table {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.res-table-head {
+  background: var(--green);
+  padding: 12px 20px;
+  display: flex; gap: 0;
+}
+.res-th {
+  font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.85);
+  letter-spacing: 1px; text-transform: uppercase;
+  flex: 1; padding: 0 8px;
+}
+.res-th:first-child { flex: 0 0 140px; }
+.res-th:last-child { flex: 0 0 120px; }
+
+.res-rows { display: flex; flex-direction: column; }
+.res-row {
+  display: flex; align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid rgba(46,125,50,0.07);
+  transition: background 0.2s;
+}
+.res-row:hover { background: var(--green-glow); }
+.res-row:last-child { border-bottom: none; }
+.res-cell { flex: 1; font-size: 12px; color: var(--text-lt); padding: 0 8px; }
+.res-cell:first-child { flex: 0 0 140px; font-weight: 700; color: var(--text); font-size: 11px; }
+.res-cell:last-child { flex: 0 0 120px; display: flex; gap: 5px; justify-content: flex-end; }
+.res-status {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+}
+.res-status.approved { background: rgba(46,125,50,0.1); color: var(--green); }
+.res-status.pending  { background: rgba(249,168,37,0.12); color: #e65100; }
+.res-status.rejected { background: rgba(198,40,40,0.1); color: var(--red); }
+.act-btn {
+  padding: 4px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; border: none; cursor: pointer;
+  transition: all 0.15s;
+}
+.act-btn.cancel { background: rgba(198,40,40,0.1); color: var(--red); }
+.act-btn.cancel:hover { background: var(--red); color: white; }
+.act-btn.approve { background: var(--green-dim); color: var(--green); }
+.act-btn.approve:hover { background: var(--green); color: white; }
+
+/* ── CTA ── */
+.cta-section {
+  margin-top: 64px;
+  background: var(--green-dark);
+  border-radius: 18px;
+  padding: 48px 44px;
+  display: flex; align-items: center; justify-content: space-between; gap: 32px;
+  opacity: 0;
+  animation: rise 0.9s ease 0.7s forwards;
+  position: relative; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(27,94,32,0.35);
+}
+.cta-section::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0, rgba(255,255,255,0.02) 1px, transparent 0, transparent 50%),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,0.02) 0, rgba(255,255,255,0.02) 1px, transparent 0, transparent 50%);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+.cta-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px; color: white; margin-bottom: 10px;
+  font-style: italic;
+}
+.cta-sub { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.7; max-width: 380px; }
+.cta-right { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; align-items: flex-end; }
+.cta-pill {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px; padding: 10px 18px;
+  font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9);
+}
+.cta-pill-icon { font-size: 18px; }
+
+/* ── TECH PILLS ── */
+.tech-row {
+  display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+  margin-top: 52px; padding-top: 40px;
+  border-top: 1px solid var(--border);
+  opacity: 0;
+  animation: rise 0.9s ease 0.9s forwards;
+}
+.tpill {
+  padding: 7px 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--muted);
+  background: var(--white);
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 6px rgba(46,125,50,0.05);
+  transition: all 0.2s;
+}
+.tpill:hover { border-color: rgba(46,125,50,0.35); color: var(--green); }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 40px; padding: 52px 0 36px; }
+  .hero-right { display: none; }
+  .feature-grid { grid-template-columns: 1fr 1fr; }
+  .screens-grid { grid-template-columns: 1fr 1fr; }
+  .form-grid { grid-template-columns: 1fr 1fr; }
+  .cta-section { flex-direction: column; }
+}
+@media (max-width: 560px) {
+  .feature-grid { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-left">
+      <div class="app-badge">
+        <div class="badge-square"></div>
+        <div class="badge-text">Internal · Corporate · Tablet/Kiosk</div>
+      </div>
+      <div class="hero-eyebrow">Roketsan</div>
+      <div class="hero-title">Room &amp; Meeting<br><em>Reservation</em></div>
+      <div class="hero-tagline">VIP rooms, committee meetings, visitor management — all in one place</div>
+      <p class="hero-desc">
+        An internal corporate application for booking meeting rooms, managing reservations with approval workflows, and tracking room availability in real time. Optimized for landscape tablet and kiosk use.
+      </p>
+      <div class="hero-meta">
+        <div class="meta-item">
+          <div class="meta-label">Client</div>
+          <div class="meta-value">Roketsan</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Type</div>
+          <div class="meta-value">Internal App</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Platform</div>
+          <div class="meta-value">Tablet · Kiosk</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Orientation</div>
+          <div class="meta-value">Landscape</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Language</div>
+          <div class="meta-value">Turkish</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <!-- Main tablet mockup: Home screen -->
+      <div class="tablet-wrap">
+        <div class="tablet">
+          <!-- Top bar -->
+          <div class="t-topbar">
+            <div class="t-logo">
+              <div class="t-logo-dot"></div>
+              ROKETSAN — Toplantı Yönetimi
+            </div>
+            <div class="t-user">
+              <span>📅 Salı, 18 Şubat 2025</span>
+              <span class="t-user-badge">A. Yıldız</span>
+              <span style="font-size:11px;cursor:pointer;">⏻</span>
+            </div>
+          </div>
+
+          <!-- Body: sidebar + content -->
+          <div class="t-body">
+            <!-- Sidebar -->
+            <div class="t-sidebar">
+              <div class="t-nav-item active">
+                <div class="t-nav-icon">🏢</div>
+                <div class="t-nav-label">VIP ODALAR</div>
+              </div>
+              <div class="t-nav-item">
+                <div class="t-nav-icon">📋</div>
+                <div class="t-nav-label">REZERVASYONLAR</div>
+              </div>
+              <div class="t-nav-item">
+                <div class="t-nav-icon">🍽️</div>
+                <div class="t-nav-label">MENÜ</div>
+              </div>
+              <div class="t-nav-item">
+                <div class="t-nav-icon">📦</div>
+                <div class="t-nav-label">SİPARİŞ</div>
+              </div>
+              <div style="flex:1;"></div>
+              <div class="t-nav-item">
+                <div class="t-nav-icon">⚙️</div>
+                <div class="t-nav-label">AYARLAR</div>
+              </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="t-main">
+              <div class="t-section-head">
+                <div class="t-section-title">VIP ODALAR</div>
+                <div class="t-section-badge">6 Oda Mevcut</div>
+              </div>
+
+              <div class="t-room-grid">
+                <!-- Room cards -->
+                <div class="t-room-card">
+                  <div class="t-room-card-head green"></div>
+                  <div class="t-room-card-body">
+                    <div class="t-room-name">VIP SALON 1</div>
+                    <div class="t-room-cap">👥 20 kişi · Kat 3</div>
+                    <div class="t-room-status available"><div class="t-status-dot"></div>Müsait</div>
+                  </div>
+                </div>
+                <div class="t-room-card">
+                  <div class="t-room-card-head red"></div>
+                  <div class="t-room-card-body">
+                    <div class="t-room-name">VIP SALON 2</div>
+                    <div class="t-room-cap">👥 15 kişi · Kat 3</div>
+                    <div class="t-room-status busy"><div class="t-status-dot"></div>Dolu · 14:00</div>
+                  </div>
+                </div>
+                <div class="t-room-card">
+                  <div class="t-room-card-head green"></div>
+                  <div class="t-room-card-body">
+                    <div class="t-room-name">KONFERANS A</div>
+                    <div class="t-room-cap">👥 30 kişi · Kat 2</div>
+                    <div class="t-room-status available"><div class="t-status-dot"></div>Müsait</div>
+                  </div>
+                </div>
+                <div class="t-room-card">
+                  <div class="t-room-card-head amber"></div>
+                  <div class="t-room-card-body">
+                    <div class="t-room-name">KONFERANS B</div>
+                    <div class="t-room-cap">👥 20 kişi · Kat 2</div>
+                    <div class="t-room-status soon"><div class="t-status-dot"></div>Yakında · 15:30</div>
+                  </div>
+                </div>
+                <div class="t-room-card">
+                  <div class="t-room-card-head red"></div>
+                  <div class="t-room-card-body">
+                    <div class="t-room-name">TOPLANTI 01</div>
+                    <div class="t-room-cap">👥 10 kişi · Kat 1</div>
+                    <div class="t-room-status busy"><div class="t-status-dot"></div>Dolu</div>
+                  </div>
+                </div>
+                <div class="t-room-card">
+                  <div class="t-room-card-head green"></div>
+                  <div class="t-room-card-body">
+                    <div class="t-room-name">TOPLANTI 02</div>
+                    <div class="t-room-cap">👥 10 kişi · Kat 1</div>
+                    <div class="t-room-status available"><div class="t-status-dot"></div>Müsait</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom bar -->
+          <div class="t-bottombar">
+            <div class="t-bottom-info">Roketsan Toplantı Rezervasyon Sistemi v2.1</div>
+            <div class="t-bottom-info">Son güncelleme: 14:22</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREEN FLOW -->
+  <div class="section" style="--delay:0.35s;">
+    <div class="section-head">
+      <div class="section-label">User Flow</div>
+      <div class="section-title">Core Screens</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="screens-grid">
+
+      <!-- Login -->
+      <div class="screen-card">
+        <div class="screen-preview">
+          <div class="sp-bar"><div class="sp-bar-title">Roketsan — Giriş</div></div>
+          <div class="sp-body">
+            <div class="sp-login-form">
+              <div class="sp-logo-big">🔐 ROKETSAN</div>
+              <div class="sp-field"></div>
+              <div class="sp-field"></div>
+              <div style="display:flex;align-items:center;gap:4px;width:100%;padding:0 2px;">
+                <div style="width:8px;height:8px;border:1px solid rgba(255,255,255,0.3);border-radius:1px;"></div>
+                <div style="font-size:6px;color:rgba(255,255,255,0.4);">Beni Hatırla</div>
+              </div>
+              <div class="sp-btn"></div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-info">
+          <div class="screen-num">01 — LOGIN</div>
+          <div class="screen-name">Authentication</div>
+          <div class="screen-desc">Email + password login with optional "Remember Me". Network check before launch. Error state: "Oluşturulamadı."</div>
+        </div>
+      </div>
+
+      <!-- Home -->
+      <div class="screen-card">
+        <div class="screen-preview">
+          <div class="sp-bar"><div class="sp-bar-title">VIP ODALAR</div></div>
+          <div class="sp-body">
+            <div style="display:flex;gap:3px;margin-bottom:4px;">
+              <div style="flex:1;height:10px;background:rgba(255,255,255,0.06);border-radius:3px;"></div>
+              <div style="flex:1;height:10px;background:var(--green-dim);border-radius:3px;border:1px solid rgba(102,187,106,0.3);"></div>
+            </div>
+            <div class="sp-rooms">
+              <div class="sp-room"></div>
+              <div class="sp-room red"></div>
+              <div class="sp-room"></div>
+              <div class="sp-room amber"></div>
+              <div class="sp-room red"></div>
+              <div class="sp-room"></div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-info">
+          <div class="screen-num">02 — HOME</div>
+          <div class="screen-name">Room Overview</div>
+          <div class="screen-desc">Sidebar navigation, room cards with live status (green/red/amber). Tap any available room to open reservation form.</div>
+        </div>
+      </div>
+
+      <!-- Create Reservation -->
+      <div class="screen-card">
+        <div class="screen-preview">
+          <div class="sp-bar"><div class="sp-bar-title">Rezervasyon Oluştur</div></div>
+          <div class="sp-body">
+            <div class="sp-form">
+              <div class="sp-frow"></div>
+              <div class="sp-frow"></div>
+              <div class="sp-frow"></div>
+              <div class="sp-frow"></div>
+              <div class="sp-frow full"></div>
+              <div class="sp-frow full"></div>
+              <div class="sp-frow"></div>
+              <div class="sp-frow"></div>
+            </div>
+            <div style="margin-top:5px;display:flex;justify-content:flex-end;gap:4px;">
+              <div style="width:28px;height:10px;background:rgba(255,255,255,0.1);border-radius:2px;"></div>
+              <div style="width:36px;height:10px;background:var(--green);border-radius:2px;opacity:0.7;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-info">
+          <div class="screen-num">03 — CREATE</div>
+          <div class="screen-name">New Reservation</div>
+          <div class="screen-desc">Full form: room, date/time, committee name, company, head, topic, representatives, region, country, visitor flag.</div>
+        </div>
+      </div>
+
+      <!-- Reservations List -->
+      <div class="screen-card">
+        <div class="screen-preview">
+          <div class="sp-bar"><div class="sp-bar-title">Rezervasyon Listesi</div></div>
+          <div class="sp-body">
+            <div class="sp-list">
+              <div class="sp-list-item">
+                <div class="sp-list-dot" style="background:var(--green);"></div>
+                <div class="sp-list-line"></div>
+                <div class="sp-list-action"></div>
+              </div>
+              <div class="sp-list-item">
+                <div class="sp-list-dot" style="background:var(--amber);"></div>
+                <div class="sp-list-line"></div>
+                <div class="sp-list-action" style="background:rgba(249,168,37,0.4);"></div>
+              </div>
+              <div class="sp-list-item">
+                <div class="sp-list-dot" style="background:var(--red);"></div>
+                <div class="sp-list-line"></div>
+                <div class="sp-list-action" style="background:rgba(198,40,40,0.35);"></div>
+              </div>
+              <div class="sp-list-item">
+                <div class="sp-list-dot" style="background:var(--green);"></div>
+                <div class="sp-list-line"></div>
+                <div class="sp-list-action"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="screen-info">
+          <div class="screen-num">04 — MANAGE</div>
+          <div class="screen-name">Reservations List</div>
+          <div class="screen-desc">All reservations with status badges. Actions: cancel, approve, reject. Color-coded by state for quick scanning.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RESERVATION FORM DETAIL -->
+  <div class="section" style="--delay:0.45s;">
+    <div class="section-head">
+      <div class="section-label">Detail View</div>
+      <div class="section-title">Create Reservation Form</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="form-showcase">
+      <div class="form-showcase-head">
+        <div class="fsh-title">🏢 VIP SALON 1 — Yeni Rezervasyon</div>
+        <div class="fsh-badge">Zorunlu alanlar *</div>
+      </div>
+      <div class="form-showcase-body">
+        <div class="form-grid">
+          <div class="form-field">
+            <div class="field-label">Oda *</div>
+            <div class="field-input filled">VIP SALON 1</div>
+          </div>
+          <div class="form-field">
+            <div class="field-label">Başlangıç Tarihi *</div>
+            <div class="field-input filled">18.02.2025 · 14:00</div>
+          </div>
+          <div class="form-field">
+            <div class="field-label">Bitiş Saati *</div>
+            <div class="field-input filled">16:30</div>
+          </div>
+          <div class="form-field">
+            <div class="field-label">Komite Adı *</div>
+            <div class="field-input">İcra Komitesi</div>
+          </div>
+          <div class="form-field">
+            <div class="field-label">Şirket *</div>
+            <div class="field-input">Roketsan A.Ş.</div>
+          </div>
+          <div class="form-field">
+            <div class="field-label">Komite Başkanı *</div>
+            <div class="field-input">A. Yıldız</div>
+          </div>
+          <div class="form-field span2">
+            <div class="field-label">Toplantı Konusu *</div>
+            <div class="field-input">2025 Q1 Strateji Planlaması</div>
+          </div>
+          <div class="form-field">
+            <div class="field-label">Bölge</div>
+            <div class="field-input">Ankara</div>
+          </div>
+          <div class="form-field span2">
+            <div class="field-label">Temsilciler</div>
+            <div class="field-input">B. Kaya, C. Demir, D. Şahin +4</div>
+          </div>
+          <div class="form-field">
+            <div class="field-label">Ülke</div>
+            <div class="field-input">Türkiye</div>
+          </div>
+          <div class="form-field span3">
+            <div class="field-label">Açıklama</div>
+            <div class="field-input" style="height:48px;align-items:flex-start;padding-top:8px;">Çeyrek dönem değerlendirme ve ürün yol haritası...</div>
+          </div>
+          <div class="form-field">
+            <div class="field-label">Ziyaretçi</div>
+            <div class="field-input">
+              <div style="width:14px;height:14px;border:2px solid var(--green);border-radius:3px;background:var(--green-dim);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--green);margin-right:6px;">✓</div>
+              Ziyaretçi var
+            </div>
+          </div>
+        </div>
+        <div class="field-actions">
+          <button class="btn-secondary">İptal</button>
+          <button class="btn-primary">✓ Rezervasyon Oluştur</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESERVATIONS LIST -->
+  <div class="section" style="--delay:0.5s;">
+    <div class="section-head">
+      <div class="section-label">Management</div>
+      <div class="section-title">Reservations List</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="res-table">
+      <div class="res-table-head">
+        <div class="res-th" style="flex:0 0 140px;">ODA</div>
+        <div class="res-th">KOMİTE</div>
+        <div class="res-th">TARİH / SAAT</div>
+        <div class="res-th">KATILIMCI</div>
+        <div class="res-th">DURUM</div>
+        <div class="res-th" style="flex:0 0 140px;text-align:right;">İŞLEMLER</div>
+      </div>
+      <div class="res-rows">
+        <div class="res-row">
+          <div class="res-cell">VIP SALON 1</div>
+          <div class="res-cell">İcra Komitesi</div>
+          <div class="res-cell">18.02.2025 · 14:00–16:30</div>
+          <div class="res-cell">A. Yıldız +6</div>
+          <div class="res-cell"><span class="res-status approved">● Onaylandı</span></div>
+          <div class="res-cell"><button class="act-btn cancel">İptal</button></div>
+        </div>
+        <div class="res-row">
+          <div class="res-cell">KONFERANS A</div>
+          <div class="res-cell">Tedarik Toplantısı</div>
+          <div class="res-cell">19.02.2025 · 09:00–11:00</div>
+          <div class="res-cell">B. Kaya +3</div>
+          <div class="res-cell"><span class="res-status pending">◌ Beklemede</span></div>
+          <div class="res-cell" style="gap:5px;display:flex;justify-content:flex-end;">
+            <button class="act-btn approve">Onayla</button>
+            <button class="act-btn cancel">Reddet</button>
+          </div>
+        </div>
+        <div class="res-row">
+          <div class="res-cell">VIP SALON 2</div>
+          <div class="res-cell">Ziyaretçi Karşılama</div>
+          <div class="res-cell">18.02.2025 · 16:00–17:00</div>
+          <div class="res-cell">C. Demir +2</div>
+          <div class="res-cell"><span class="res-status rejected">✕ Reddedildi</span></div>
+          <div class="res-cell"><button class="act-btn approve">Yeniden</button></div>
+        </div>
+        <div class="res-row">
+          <div class="res-cell">TOPLANTI 02</div>
+          <div class="res-cell">Proje Değerlendirme</div>
+          <div class="res-cell">20.02.2025 · 10:30–12:00</div>
+          <div class="res-cell">D. Şahin +4</div>
+          <div class="res-cell"><span class="res-status approved">● Onaylandı</span></div>
+          <div class="res-cell"><button class="act-btn cancel">İptal</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KEY FEATURES -->
+  <div class="section" style="--delay:0.55s;">
+    <div class="section-head">
+      <div class="section-label">Capabilities</div>
+      <div class="section-title">Key Features</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🏢</div>
+        <div class="feature-title">VIP Room Management</div>
+        <div class="feature-desc">Dedicated section for VIP rooms with separate capacity, floor info, and priority booking. Color-coded availability at a glance.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <div class="feature-title">Full Reservation Form</div>
+        <div class="feature-desc">12-field form: committee, company, date/time, head, topic, representatives, region, country, visitor checkbox and description.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✅</div>
+        <div class="feature-title">Approval Workflow</div>
+        <div class="feature-desc">Pending → Approved / Rejected state machine. Staff can approve, reject or cancel reservations directly from the list view.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <div class="feature-title">Landscape Tablet & Kiosk</div>
+        <div class="feature-desc">Layout locked to landscape orientation. Sidebar navigation optimized for touch on large screens and fixed kiosk deployments.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🟢</div>
+        <div class="feature-title">Live Room Status</div>
+        <div class="feature-desc">Rooms show real-time status: Müsait (green), Dolu (red), Yakında (amber). Instant visual feedback before booking.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🍽️</div>
+        <div class="feature-title">Catering (Menu / Order)</div>
+        <div class="feature-desc">Backend-ready menu and room order module exposed as sidebar entry points for catering requests tied to reservations.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div>
+      <div class="cta-title">Corporate-grade room booking</div>
+      <p class="cta-sub">Built for Roketsan's internal operations — secure login, VIP room priority, approval chains, and catering integration in a single landscape-optimized interface.</p>
+    </div>
+    <div class="cta-right">
+      <div class="cta-pill"><div class="cta-pill-icon">🔒</div>Internal deployment only</div>
+      <div class="cta-pill"><div class="cta-pill-icon">📱</div>Tablet · Kiosk · Landscape</div>
+      <div class="cta-pill"><div class="cta-pill-icon">🇹🇷</div>Turkish UI · Roketsan branding</div>
+    </div>
+  </div>
+
+  <!-- TECH PILLS -->
+  <div class="tech-row">
+    <span class="tpill">Flutter · Dart</span>
+    <span class="tpill">Material Design</span>
+    <span class="tpill">Landscape Lock</span>
+    <span class="tpill">REST API</span>
+    <span class="tpill">Approval Workflow</span>
+    <span class="tpill">Tablet / Kiosk</span>
+    <span class="tpill">Green 800 Theme</span>
+    <span class="tpill">Arial / Sans-serif</span>
+    <span class="tpill">VIP Room Module</span>
+    <span class="tpill">Catering Module</span>
+    <span class="tpill">Network Check</span>
+  </div>
+
+</div>
+</body>
+</html>
